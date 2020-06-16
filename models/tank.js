@@ -1,8 +1,10 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const tank = sequelize.define('tank', {
-    name: DataTypes.STRING,
-    teaId: DataTypes.INTEGER,
+    name: {
+      type: DataTypes.STRING,
+      unique: true,
+    },
     tempHigh: DataTypes.FLOAT,
     tempLow: DataTypes.FLOAT,
     phHigh: DataTypes.FLOAT,
