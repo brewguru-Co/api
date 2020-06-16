@@ -5,17 +5,26 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       unique: true,
     },
-    temp_high_op: DataTypes.FLOAT,
-    temp_low_op: DataTypes.FLOAT,
-    ph_high_op: DataTypes.FLOAT,
-    ph_low_op: DataTypes.FLOAT,
-    do_high_op: DataTypes.INTEGER,
-    do_low_op: DataTypes.INTEGER,
-    brix_high_op: DataTypes.INTEGER,
-    brix_low_op: DataTypes.INTEGER
+    tempHighOp: DataTypes.FLOAT,
+    tempLowOp: DataTypes.FLOAT,
+    phHighOp: DataTypes.FLOAT,
+    phLowOp: DataTypes.FLOAT,
+    doHighOp: DataTypes.INTEGER,
+    doLowOp: DataTypes.INTEGER,
+    brixHighOp: DataTypes.INTEGER,
+    brixLowOp: DataTypes.INTEGER,
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
+    }
   }, {});
   tea.associate = function(models) {
     // associations can be defined here
+    tea.hasMany(models.tank);
   };
   return tea;
 };

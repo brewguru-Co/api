@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "deploy:dev": "export NODE_ENV=development && node_modules/.bin/sequelize db:migrate",
+    "undo:dev:all": "export NODE_ENV=development && node_modules/.bin/sequelize db:migrate:undo:all"
   },
   "dependencies": {
     "express": "~4.16.1",

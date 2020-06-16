@@ -3,7 +3,7 @@ const { sequelize } = require('../models');
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('teas', {
+    return queryInterface.createTable('tanks', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -14,29 +14,42 @@ module.exports = {
         unique: true,
         type: Sequelize.STRING,
       },
-      tempHighOp: {
+      teaId: {
+        allowNull: false,
+        references: {
+          model: 'teas',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        type: Sequelize.INTEGER,
+      },
+      tempHigh: {
         type: Sequelize.FLOAT
       },
-      tempLowOp: {
+      tempLow: {
         type: Sequelize.FLOAT
       },
-      phHighOp: {
+      phHigh: {
         type: Sequelize.FLOAT
       },
-      phLowOp: {
+      phLow: {
         type: Sequelize.FLOAT
       },
-      doHighOp: {
+      doHigh: {
         type: Sequelize.INTEGER
       },
-      doLowOp: {
+      doLow: {
         type: Sequelize.INTEGER
       },
-      brixHighOp: {
+      brixHigh: {
         type: Sequelize.INTEGER
       },
-      brixLowOp: {
+      brixLow: {
         type: Sequelize.INTEGER
+      },
+      startedAt: {
+        type: Sequelize.DATE
       },
       createdAt: {
         allowNull: false,
@@ -51,6 +64,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('teas');
+    return queryInterface.dropTable('tanks');
   }
 };
