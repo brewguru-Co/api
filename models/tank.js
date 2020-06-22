@@ -2,6 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   const tank = sequelize.define('tank', {
     name: {
+      allowNull: false,
       type: DataTypes.STRING,
       unique: true,
     },
@@ -15,10 +16,12 @@ module.exports = (sequelize, DataTypes) => {
     brixLow: DataTypes.INTEGER,
     startedAt: DataTypes.DATE,
     createdAt: {
+      allowNull: false,
       type: DataTypes.DATE,
       defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
     },
     updatedAt: {
+      allowNull: false,
       type: DataTypes.DATE,
       defaultValue: sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
     }
