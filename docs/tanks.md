@@ -16,7 +16,7 @@
 | brixHigh | number | max limit value of Brix |
 | brixLow | number | min limit value of Brix |
 
-## Create a Tea
+## Create a Tank
 Create a tank
 
 ### Route
@@ -106,7 +106,7 @@ Retrieved result list of tanks on success, or error on failure.
 }]
 ```
 
-## Update a Tea
+## Update a Tank
 Update a tank
 
 ### Route
@@ -162,7 +162,7 @@ Updated tank object on success, or error on failure.
 }
 ```
 
-## Delete a Tea
+## Delete a Tank
 Delete a tank
 
 ### Route
