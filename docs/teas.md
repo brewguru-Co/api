@@ -13,10 +13,10 @@
 | doHighOp | number | optimal max value of DO |
 | doLowOp | number | optimal min value of DO |
 | brixHighOp | number | optimal max value of Brix |
-| brixLowOp | number | toptimal min value of Brix |
+| brixLowOp | number | optimal min value of Brix |
 
 ## Create a Tea
-Create team member's record
+Create a tea
 
 ### Route
 `POST /teas`
@@ -32,7 +32,7 @@ Create team member's record
 | doHighOp | number | optimal max value of DO |
 | doLowOp | number | optimal min value of DO |
 | brixHighOp | number | optimal max value of Brix |
-| brixLowOp | number | toptimal min value of Brix |
+| brixLowOp | number | optimal min value of Brix |
 
 ### Request Example
 ```sh
@@ -123,7 +123,7 @@ Update a tea
 | doHighOp | number | optimal max value of DO |
 | doLowOp | number | optimal min value of DO |
 | brixHighOp | number | optimal max value of Brix |
-| brixLowOp | number | toptimal min value of Brix |
+| brixLowOp | number | optimal min value of Brix |
 
 ### Request Example
 ```sh
