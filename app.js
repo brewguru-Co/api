@@ -1,3 +1,4 @@
+const createError = require('http-errors');
 const express = require('express');
 const morgan = require('morgan');
 
@@ -12,6 +13,9 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/', indexRouter);
 app.use('/teas', teasRouter);
+
+// catch 404 and forward to error handler
+app.use((req, res, next) => next(createError(404)));
 
 // error handler
 app.use((err, req, res) => {

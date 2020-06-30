@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start:dev": "export NODE_ENV=development && nodemon ./bin/www",
+    "start:prod": "export NODE_ENV=production && nodemon ./bin/www",
     "deploy:dev": "export NODE_ENV=development && node_modules/.bin/sequelize db:migrate",
     "undo:dev:all": "export NODE_ENV=development && node_modules/.bin/sequelize db:migrate:undo:all"
   },

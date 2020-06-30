@@ -42,9 +42,21 @@ function update(req, res, next) {
   if (error) {
     return next(createError(404, error.message));
   }
+
+  const options = {
+    where: { name: value.name },
+    raw: true,
+  };
+
   return models.tea
-    .update(value)
-    .then((tea) => res.send(toTeaObject(tea.dataValues)))
+    .update(value, options)
+    .then(([updated]) => {
+      if (updated) {
+        models.tea.findOne(options).then((tea) => res.send(toTeaObject(tea)));
+      } else {
+        next(createError(404, 'Nothing to update'));
+      }
+    })
     .catch((err) => next(err));
 }
 
@@ -54,7 +66,8 @@ function get(req, res) {
     .then((teas) => res.send(teas.map((tea) => toTeaObject(tea))));
 }
 
-function remove(req, res) {}
+function remove(req, res) {
+}
 
 module.exports = {
   create,
