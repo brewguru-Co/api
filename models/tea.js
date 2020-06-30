@@ -1,4 +1,3 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
   const tea = sequelize.define('tea', {
     name: {
@@ -13,9 +12,9 @@ module.exports = (sequelize, DataTypes) => {
     doHighOp: DataTypes.INTEGER,
     doLowOp: DataTypes.INTEGER,
     brixHighOp: DataTypes.INTEGER,
-    brixLowOp: DataTypes.INTEGER
+    brixLowOp: DataTypes.INTEGER,
   }, {});
-  tea.associate = function(models) {
+  tea.associate = (models) => {
     // associations can be defined here
     tea.hasMany(models.tank);
   };

@@ -1,4 +1,3 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
   const notification = sequelize.define('notification', {
     email: {
@@ -8,10 +7,8 @@ module.exports = (sequelize, DataTypes) => {
     phone: {
       type: DataTypes.STRING,
       unique: true,
-    }
+    },
   }, {});
-  notification.associate = function(models) {
-    // associations can be defined here
-  };
+
   return notification;
 };

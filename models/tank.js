@@ -1,4 +1,3 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
   const tank = sequelize.define('tank', {
     name: {
@@ -14,16 +13,16 @@ module.exports = (sequelize, DataTypes) => {
     doLow: DataTypes.INTEGER,
     brixHigh: DataTypes.INTEGER,
     brixLow: DataTypes.INTEGER,
-    startedAt: DataTypes.DATE
+    startedAt: DataTypes.DATE,
   }, {});
-  tank.associate = function(models) {
+  tank.associate = (models) => {
     // associations can be defined here
     models.tank.belongsTo(models.tea, {
-      onUpdate: "CASCADE",
-      onDelete: "CASCADE",
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
       foreignKey: {
-        allowNull: false
-      }
+        allowNull: false,
+      },
     });
   };
   return tank;

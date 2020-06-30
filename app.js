@@ -1,4 +1,3 @@
-const createError = require('http-errors');
 const express = require('express');
 const morgan = require('morgan');
 
@@ -15,7 +14,7 @@ app.use('/', indexRouter);
 app.use('/teas', teasRouter);
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res) => {
   const errCode = err.status || 500;
   res.status(errCode);
 
