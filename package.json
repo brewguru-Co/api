@@ -8,6 +8,7 @@
     "undo:dev:all": "export NODE_ENV=development && node_modules/.bin/sequelize db:migrate:undo:all"
   },
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "moment": "^2.27.0",

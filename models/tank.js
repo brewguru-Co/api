@@ -14,17 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     doLow: DataTypes.INTEGER,
     brixHigh: DataTypes.INTEGER,
     brixLow: DataTypes.INTEGER,
-    startedAt: DataTypes.DATE,
-    createdAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
-    },
-    updatedAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
-    }
+    startedAt: DataTypes.DATE
   }, {});
   tank.associate = function(models) {
     // associations can be defined here

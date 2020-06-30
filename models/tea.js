@@ -13,15 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     doHighOp: DataTypes.INTEGER,
     doLowOp: DataTypes.INTEGER,
     brixHighOp: DataTypes.INTEGER,
-    brixLowOp: DataTypes.INTEGER,
-    createdAt: {
-      type: DataTypes.DATE,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
-    }
+    brixLowOp: DataTypes.INTEGER
   }, {});
   tea.associate = function(models) {
     // associations can be defined here
