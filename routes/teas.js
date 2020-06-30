@@ -6,5 +6,6 @@ const { teas } = require('../controllers');
 router.get('/', teas.get);
 router.post('/', teas.create);
 router.patch('/', teas.update);
+router.delete('/', teas.remove);
 
 module.exports = router;

@@ -60,13 +60,36 @@ function update(req, res, next) {
     .catch((err) => next(err));
 }
 
-function get(req, res) {
+function get(req, res, next) {
   models.tea
     .findAll({ raw: true })
-    .then((teas) => res.send(teas.map((tea) => toTeaObject(tea))));
+    .then((teas) => res.send(teas.map((tea) => toTeaObject(tea))))
+    .catch((err) => next(err));
 }
 
-function remove(req, res) {
+function remove(req, res, next) {
+  const { body } = req;
+  const { error, value } = teaSchema.validate(body);
+
+  if (error) {
+    return next(createError(404, error.message));
+  }
+
+  const options = {
+    where: { name: value.name },
+    raw: true,
+  };
+
+  return models.tea
+    .destroy(options)
+    .then((deleted) => {
+      if (deleted) {
+        res.send({});
+      } else {
+        next(createError(404, 'Nothing to delete'));
+      }
+    })
+    .catch((err) => next(err));
 }
 
 module.exports = {
