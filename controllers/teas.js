@@ -3,8 +3,10 @@ const Joi = require('@hapi/joi');
 const moment = require('moment');
 const models = require('../models');
 
+const teaIdSchema = Joi.number().required().error(() => new Error('tea id is required'));
+const teaNameSchema = Joi.string().required().error(() => new Error('tea name is required'));
 const teaSchema = Joi.object({
-  name: Joi.string().required(),
+  name: Joi.string(),
   tempHighOp: Joi.number(),
   tempLowOp: Joi.number(),
   phHighOp: Joi.number(),
@@ -22,42 +24,45 @@ function toTeaObject(rawTea) {
   return tea;
 }
 
-function create(req, res, next) {
-  const { body } = req;
-  const { error, value } = teaSchema.validate(body);
+async function create(req, res, next) {
+  try {
+    const { body } = req;
+    const value = await teaSchema.validateAsync(body);
+    await teaNameSchema.validateAsync(body.name);
 
-  if (error) {
-    return next(createError(404, error.message));
+    return models.tea
+      .create(value)
+      .then((tea) => res.send(toTeaObject(tea.dataValues)))
+      .catch((err) => next(err));
+  } catch (e) {
+    return next(createError(404, e.message));
   }
-  return models.tea
-    .create(value)
-    .then((tea) => res.send(toTeaObject(tea.dataValues)))
-    .catch((err) => next(err));
 }
 
-function update(req, res, next) {
-  const { body } = req;
-  const { error, value } = teaSchema.validate(body);
+async function update(req, res, next) {
+  try {
+    const { body, params } = req;
+    const value = await teaSchema.validateAsync(body);
+    await teaIdSchema.validateAsync(params.teaId);
 
-  if (error) {
-    return next(createError(404, error.message));
+    const options = {
+      where: { id: params.teaId },
+      raw: true,
+    };
+
+    return models.tea
+      .update(value, options)
+      .then(([updated]) => {
+        if (updated) {
+          models.tea.findOne(options).then((tea) => res.send(toTeaObject(tea)));
+        } else {
+          next(createError(404, 'Nothing to update'));
+        }
+      })
+      .catch((err) => next(err));
+  } catch (e) {
+    return next(createError(404, e.message));
   }
-
-  const options = {
-    where: { name: value.name },
-    raw: true,
-  };
-
-  return models.tea
-    .update(value, options)
-    .then(([updated]) => {
-      if (updated) {
-        models.tea.findOne(options).then((tea) => res.send(toTeaObject(tea)));
-      } else {
-        next(createError(404, 'Nothing to update'));
-      }
-    })
-    .catch((err) => next(err));
 }
 
 function get(req, res, next) {
@@ -67,29 +72,30 @@ function get(req, res, next) {
     .catch((err) => next(err));
 }
 
-function remove(req, res, next) {
-  const { body } = req;
-  const { error, value } = teaSchema.validate(body);
+async function remove(req, res, next) {
+  try {
+    const { body } = req;
+    const value = await teaIdSchema.validateAsync(body.teaId);
 
-  if (error) {
-    return next(createError(404, error.message));
+    console.log(body, value)
+    const options = {
+      where: { id: value },
+      raw: true,
+    };
+
+    return models.tea
+      .destroy(options)
+      .then((deleted) => {
+        if (deleted) {
+          res.send({ id: value });
+        } else {
+          next(createError(404, 'Nothing to delete'));
+        }
+      })
+      .catch((err) => next(err));
+  } catch (e) {
+    return next(createError(404, e.message));
   }
-
-  const options = {
-    where: { name: value.name },
-    raw: true,
-  };
-
-  return models.tea
-    .destroy(options)
-    .then((deleted) => {
-      if (deleted) {
-        res.send({});
-      } else {
-        next(createError(404, 'Nothing to delete'));
-      }
-    })
-    .catch((err) => next(err));
 }
 
 module.exports = {

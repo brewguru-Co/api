@@ -3,10 +3,11 @@ const Joi = require('@hapi/joi');
 const moment = require('moment');
 const models = require('../models');
 
-const teaIdSchema = Joi.number().required();
-const tankIdSchema = Joi.number().required();
+const teaIdSchema = Joi.number().required().error(() => new Error('tea id is required'));
+const tankIdSchema = Joi.number().required().error(() => new Error('tank id is required'));
+const tankNameSchema = Joi.string().required().error(() => new Error('tanke name is required'));
 const tankSchema = Joi.object({
-  name: Joi.string().required(),
+  name: Joi.string(),
   teaId: Joi.number(),
   tempHigh: Joi.number(),
   tempLow: Joi.number(),
@@ -29,6 +30,7 @@ async function create(req, res, next) {
   try {
     const { body } = req;
     const value = await tankSchema.validateAsync(body);
+    await tankNameSchema.validateAsync(body.name);
     await teaIdSchema.validateAsync(body.teaId);
 
     return models.tank
@@ -87,7 +89,7 @@ async function remove(req, res, next) {
       .destroy(options)
       .then((deleted) => {
         if (deleted) {
-          res.send({ tankId: value });
+          res.send({ id: value });
         } else {
           next(createError(404, 'Nothing to delete'));
         }
