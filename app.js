@@ -4,6 +4,7 @@ const morgan = require('morgan');
 
 const indexRouter = require('./routes/index');
 const teasRouter = require('./routes/teas');
+const tankRouter = require('./routes/tanks');
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/', indexRouter);
 app.use('/teas', teasRouter);
+app.use('/tanks', tankRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => next(createError(404)));
