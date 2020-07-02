@@ -220,6 +220,342 @@
 					"response": []
 				},
 				{
+					"name": "[Invalid] Create tea without (name)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "991c05a9-f0f0-4d5c-9409-8cdd977aea08",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "021f00f8-8796-4ea8-b48e-d815520d1591",
+								"exec": [
+									"pm.test(\"response is 404 error\", () => {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"error message\", () => {",
+									"    pm.expect(jsonData.error).to.eql(\"tea name is required\");",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"tempHighOp\": 25,\n\t\"tempLowOp\": 23,\n\t\"phHighOp\": 3.5,\n\t\"phLowOp\": 3,\n\t\"doHighOp\": 80,\n\t\"doLowOp\": 70,\n\t\"brixHighOp\": 80,\n\t\"brixLowOp\": 70\n}"
+						},
+						"url": {
+							"raw": "{{api}}/teas",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"teas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Invalid] Create tea duplicated (name) [TBD]",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e40a62c7-c429-4f52-a749-5c1e1f1d5be9",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "2723c7b5-cce4-4f75-9b74-af6678ad0381",
+								"exec": [
+									"pm.test(\"response is 404 error\", () => {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"error message\", () => {",
+									"    pm.expect(jsonData.error).to.eql(\"tea name is already existed\");",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"kombucha\"\n}"
+						},
+						"url": {
+							"raw": "{{api}}/teas",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"teas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Valid] Update tea",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8e1b9bda-21c5-4ef7-ab2d-bf5788904da3",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "b7941e82-81f8-46d1-8e7d-9f07ba91e96d",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const Ajv = require('ajv');",
+									"const ajv = new Ajv({ logger: console });",
+									"const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"        id: { type: \"number\" },",
+									"        name: { type: \"string\" },",
+									"        tempHighOp: { type: [\"number\", \"null\"] },",
+									"        tempLowOp: { type: [\"number\", \"null\"] },",
+									"        phHighOp: { type: [\"number\", \"null\"] },",
+									"        phLowOp: { type: [\"number\", \"null\"] },",
+									"        doHighOp: { type: [\"number\", \"null\"] },",
+									"        doLowOp: { type: [\"number\", \"null\"] },",
+									"        brixHighOp: { type: [\"number\", \"null\"] },",
+									"        brixLowOp: { type: [\"number\", \"null\"] },",
+									"        createdAt: { type: \"number\" },",
+									"        updatedAt: { type: \"number\" },",
+									"    },",
+									"    required: [\"id\", \"name\", \"tempHighOp\", \"tempLowOp\", \"phHighOp\", \"phLowOp\", \"doHighOp\",",
+									"        \"doLowOp\", \"brixHighOp\", \"brixLowOp\", \"createdAt\", \"updatedAt\"]",
+									"}",
+									"",
+									"pm.test('Schema is valid', () => {",
+									"    pm.expect(ajv.validate(schema, jsonData)).to.be.true;",
+									"});",
+									"",
+									"pm.test('Data has updated correctly', () => {",
+									"    pm.expect(jsonData.tempHighOp).to.eql(25)",
+									"    pm.expect(jsonData.tempLowOp).to.eql(23)",
+									"    pm.expect(jsonData.phHighOp).to.eql(3.5)",
+									"    pm.expect(jsonData.phLowOp).to.eql(3)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"tempHighOp\": 25,\n\t\"tempLowOp\": 23,\n\t\"phHighOp\": 3.5,\n\t\"phLowOp\": 3\n}"
+						},
+						"url": {
+							"raw": "{{api}}/teas/:teaId",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"teas",
+								":teaId"
+							],
+							"variable": [
+								{
+									"key": "teaId",
+									"value": "{{teaId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Invalid] Update tea duplicated (name) [TBD]",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "68bd5714-ddac-4b2c-beb9-ddff0250c5a7",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "da9c8065-7394-4a6d-9e7b-ddb83b9ca5fb",
+								"exec": [
+									"pm.test(\"response is 404 error\", () => {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"error message\", () => {",
+									"    pm.expect(jsonData.error).to.eql(\"tea name is already existed\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"tempHighOp\": 25,\n\t\"tempLowOp\": 23,\n\t\"phHighOp\": 3.5,\n\t\"phLowOp\": 3\n}"
+						},
+						"url": {
+							"raw": "{{api}}/teas/:teaId",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"teas",
+								":teaId"
+							],
+							"variable": [
+								{
+									"key": "teaId",
+									"value": "{{teaId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Invalid] Update tea (wrong teaId) [TBD]",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c5d56c82-87d3-4e3a-832c-1625449d639e",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "58e5034e-3852-491e-876c-9bba85a51390",
+								"exec": [
+									"pm.test(\"response is 404 error\", () => {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"error message\", () => {",
+									"    pm.expect(jsonData.error).to.eql(\"Wrong tea id\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"tempHighOp\": 25,\n\t\"tempLowOp\": 23,\n\t\"phHighOp\": 3.5,\n\t\"phLowOp\": 3\n}"
+						},
+						"url": {
+							"raw": "{{api}}/teas/:teaId",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"teas",
+								":teaId"
+							],
+							"variable": [
+								{
+									"key": "teaId",
+									"value": "99999"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get teas",
 					"event": [
 						{
