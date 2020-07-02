@@ -140,6 +140,86 @@
 					"response": []
 				},
 				{
+					"name": "[Valid] Create tea (all)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "65fe96e0-c8ab-481f-aff8-97667394f698",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "9a25bd34-4929-4f61-9eb2-4fe5d0db7cad",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const Ajv = require('ajv');",
+									"const ajv = new Ajv({ logger: console });",
+									"const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"        id: { type: \"number\" },",
+									"        name: { type: \"string\" },",
+									"        tempHighOp: { type: [\"number\", \"null\"] },",
+									"        tempLowOp: { type: [\"number\", \"null\"] },",
+									"        phHighOp: { type: [\"number\", \"null\"] },",
+									"        phLowOp: { type: [\"number\", \"null\"] },",
+									"        doHighOp: { type: [\"number\", \"null\"] },",
+									"        doLowOp: { type: [\"number\", \"null\"] },",
+									"        brixHighOp: { type: [\"number\", \"null\"] },",
+									"        brixLowOp: { type: [\"number\", \"null\"] },",
+									"        createdAt: { type: \"number\" },",
+									"        updatedAt: { type: \"number\" },",
+									"    },",
+									"    required: [\"id\", \"name\", \"tempHighOp\", \"tempLowOp\", \"phHighOp\", \"phLowOp\", \"doHighOp\",",
+									"        \"doLowOp\", \"brixHighOp\", \"brixLowOp\", \"createdAt\", \"updatedAt\"]",
+									"}",
+									"",
+									"pm.test('Schema is valid', function () {",
+									"    pm.expect(ajv.validate(schema, jsonData)).to.be.true;",
+									"});",
+									"",
+									"pm.environment.set(\"teaId2\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"kombucha2\",\n\t\"tempHighOp\": 25,\n\t\"tempLowOp\": 23,\n\t\"phHighOp\": 3.5,\n\t\"phLowOp\": 3,\n\t\"doHighOp\": 80,\n\t\"doLowOp\": 70,\n\t\"brixHighOp\": 80,\n\t\"brixLowOp\": 70\n}"
+						},
+						"url": {
+							"raw": "{{api}}/teas",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"teas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get teas",
 					"event": [
 						{
@@ -246,7 +326,8 @@
 									"});",
 									"",
 									"const jsonData = pm.response.json();",
-									""
+									"const teaId = postman.getEnvironmentVariable(\"teaId\");",
+									"pm.expect(jsonData.id).to.eql(teaId);"
 								],
 								"type": "text/javascript"
 							}
@@ -264,6 +345,61 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n\t\"teaId\": {{teaId}}\n}"
+						},
+						"url": {
+							"raw": "{{api}}/teas",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"teas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Valid] Delete tea (all)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6a1d405a-e214-4536-a352-b1654bc9028d",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "66ff6648-561b-4077-9f2c-726bec2e1a83",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const teaId = postman.getEnvironmentVariable(\"teaId2\");",
+									"pm.expect(jsonData.id).to.eql(teaId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"teaId\": {{teaId2}}\n}"
 						},
 						"url": {
 							"raw": "{{api}}/teas",
