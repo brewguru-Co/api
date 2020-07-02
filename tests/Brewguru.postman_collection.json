@@ -754,7 +754,971 @@
 		},
 		{
 			"name": "Tanks",
-			"item": [],
+			"item": [
+				{
+					"name": "[Valid] Create tea (all)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7c86ace7-37a1-4184-85e9-0971e1d96baa",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "8241631e-8101-4f1a-a036-8539715eccb7",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const Ajv = require('ajv');",
+									"const ajv = new Ajv({ logger: console });",
+									"const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"        id: { type: \"number\" },",
+									"        name: { type: \"string\" },",
+									"        tempHighOp: { type: [\"number\", \"null\"] },",
+									"        tempLowOp: { type: [\"number\", \"null\"] },",
+									"        phHighOp: { type: [\"number\", \"null\"] },",
+									"        phLowOp: { type: [\"number\", \"null\"] },",
+									"        doHighOp: { type: [\"number\", \"null\"] },",
+									"        doLowOp: { type: [\"number\", \"null\"] },",
+									"        brixHighOp: { type: [\"number\", \"null\"] },",
+									"        brixLowOp: { type: [\"number\", \"null\"] },",
+									"        createdAt: { type: \"number\" },",
+									"        updatedAt: { type: \"number\" },",
+									"    },",
+									"    required: [\"id\", \"name\", \"tempHighOp\", \"tempLowOp\", \"phHighOp\", \"phLowOp\", \"doHighOp\",",
+									"        \"doLowOp\", \"brixHighOp\", \"brixLowOp\", \"createdAt\", \"updatedAt\"]",
+									"}",
+									"",
+									"pm.test('Schema is valid', function () {",
+									"    pm.expect(ajv.validate(schema, jsonData)).to.be.true;",
+									"});",
+									"",
+									"pm.environment.set(\"teaId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"kombucha\",\n\t\"tempHighOp\": 25,\n\t\"tempLowOp\": 23,\n\t\"phHighOp\": 3.5,\n\t\"phLowOp\": 3,\n\t\"doHighOp\": 80,\n\t\"doLowOp\": 70,\n\t\"brixHighOp\": 80,\n\t\"brixLowOp\": 70\n}"
+						},
+						"url": {
+							"raw": "{{api}}/teas",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"teas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Valid] Create tank (only required)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "fc03387d-24df-48e3-98b9-84b8c4239e90",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "31c29ef0-3dd4-41b6-80ee-557b1b235c7d",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const Ajv = require('ajv');",
+									"const ajv = new Ajv({ logger: console });",
+									"const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"        id: { type: \"number\" },",
+									"        name: { type: \"string\" },",
+									"        teaId: { type: \"number\" },",
+									"        tempHigh: { type: [\"number\", \"null\"] },",
+									"        tempLow: { type: [\"number\", \"null\"] },",
+									"        phHigh: { type: [\"number\", \"null\"] },",
+									"        phLow: { type: [\"number\", \"null\"] },",
+									"        doHigh: { type: [\"number\", \"null\"] },",
+									"        doLow: { type: [\"number\", \"null\"] },",
+									"        brixHigh: { type: [\"number\", \"null\"] },",
+									"        brixLow: { type: [\"number\", \"null\"] },",
+									"        createdAt: { type: \"number\" },",
+									"        updatedAt: { type: \"number\" },",
+									"    },",
+									"    required: [\"id\", \"name\", \"teaId\", \"tempHigh\", \"tempLow\", \"phHigh\", \"phLow\", \"doHigh\", \"doLow\", \"brixHigh\", \"brixLow\", \"createdAt\", \"updatedAt\"]",
+									"}",
+									"",
+									"pm.test('Schema is valid', function () {",
+									"    pm.expect(ajv.validate(schema, jsonData)).to.be.true;",
+									"});",
+									"",
+									"pm.environment.set(\"tankId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"tank1\",\n\t\"teaId\": {{teaId}}\n}"
+						},
+						"url": {
+							"raw": "{{api}}/tanks",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"tanks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Valid] Create tank (all)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "82f6e614-6cf6-4fbc-a9a8-de6207a29b38",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "140e6338-c11e-4772-9029-00004be7af89",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const Ajv = require('ajv');",
+									"const ajv = new Ajv({ logger: console });",
+									"const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"        id: { type: \"number\" },",
+									"        name: { type: \"string\" },",
+									"        teaId: { type: \"number\" },",
+									"        tempHigh: { type: [\"number\", \"null\"] },",
+									"        tempLow: { type: [\"number\", \"null\"] },",
+									"        phHigh: { type: [\"number\", \"null\"] },",
+									"        phLow: { type: [\"number\", \"null\"] },",
+									"        doHigh: { type: [\"number\", \"null\"] },",
+									"        doLow: { type: [\"number\", \"null\"] },",
+									"        brixHigh: { type: [\"number\", \"null\"] },",
+									"        brixLow: { type: [\"number\", \"null\"] },",
+									"        createdAt: { type: \"number\" },",
+									"        updatedAt: { type: \"number\" },",
+									"    },",
+									"    required: [\"id\", \"name\", \"teaId\", \"tempHigh\", \"tempLow\", \"phHigh\", \"phLow\", \"doHigh\", \"doLow\", \"brixHigh\", \"brixLow\", \"createdAt\", \"updatedAt\"]",
+									"}",
+									"",
+									"pm.test('Schema is valid', function () {",
+									"    pm.expect(ajv.validate(schema, jsonData)).to.be.true;",
+									"});",
+									"",
+									"pm.environment.set(\"tankId2\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"tank2\",\n\t\"teaId\": {{teaId}},\n\t\"tempHigh\": 25,\n\t\"tempLow\": 23,\n\t\"phHigh\": 3.5,\n\t\"phLow\": 3,\n\t\"doHigh\": 80,\n\t\"doLow\": 70,\n\t\"brixHigh\": 80,\n\t\"brixLow\": 70\n}"
+						},
+						"url": {
+							"raw": "{{api}}/tanks",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"tanks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Invalid] Create tank without (name)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "74bdc648-ad7e-4460-be06-f52ec7bc0fe7",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "7dfdf260-491d-4446-859c-c069f24b332a",
+								"exec": [
+									"pm.test(\"response is 404 error\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"error message\", () => {",
+									"    pm.expect(jsonData.error).to.eql(\"tank name is required\");",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"teaId\": {{teaId}}\n}"
+						},
+						"url": {
+							"raw": "{{api}}/tanks",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"tanks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Invalid] Create tank without (teaId)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "738e50a0-056b-4ba4-8dd8-a1a3f0c903e3",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "c1ca9bfd-9e06-46f4-b236-a48bd0ec802c",
+								"exec": [
+									"pm.test(\"response is 404 error\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"error message\", () => {",
+									"    pm.expect(jsonData.error).to.eql(\"tea id is required\");",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"tank3\"\n}"
+						},
+						"url": {
+							"raw": "{{api}}/tanks",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"tanks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Invalid] Create tank (wrong teaId) [TBD]",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f8ce8d86-5cad-4050-9796-fcb0d1aea282",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "4bf5e7a6-fe05-4569-82f7-fa0c313cefb1",
+								"exec": [
+									"pm.test(\"response is 404 error\", () => {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"error message\", () => {",
+									"    pm.expect(jsonData.error).to.eql(\"Wrong tea id\");",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"tank3\",\n\t\"teaId\": 9999\n}"
+						},
+						"url": {
+							"raw": "{{api}}/tanks",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"tanks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Invalid] Create tank duplicated (name) [TBD]",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "807911f2-d32f-45be-bb31-ec8df66c2f8a",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "a374e12e-2614-4620-b6e8-7b17520c9941",
+								"exec": [
+									"pm.test(\"response is 400 error\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"error message\", () => {",
+									"    pm.expect(jsonData.error).to.eql(\"tea name is already existed\");",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"tank1\",\n\t\"teaId\": {{teaId}}\n}"
+						},
+						"url": {
+							"raw": "{{api}}/tanks",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"tanks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Valid] Update tank",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "1305ed5e-8c09-4a62-ac83-99fdb637dae1",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "9e8c2d31-54b1-47fb-a646-0decf5140ac3",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const Ajv = require('ajv');",
+									"const ajv = new Ajv({ logger: console });",
+									"const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"        id: { type: \"number\" },",
+									"        name: { type: \"string\" },",
+									"        teaId: { type: \"number\" },",
+									"        tempHigh: { type: [\"number\", \"null\"] },",
+									"        tempLow: { type: [\"number\", \"null\"] },",
+									"        phHigh: { type: [\"number\", \"null\"] },",
+									"        phLow: { type: [\"number\", \"null\"] },",
+									"        doHigh: { type: [\"number\", \"null\"] },",
+									"        doLow: { type: [\"number\", \"null\"] },",
+									"        brixHigh: { type: [\"number\", \"null\"] },",
+									"        brixLow: { type: [\"number\", \"null\"] },",
+									"        createdAt: { type: \"number\" },",
+									"        updatedAt: { type: \"number\" },",
+									"    },",
+									"    required: [\"id\", \"name\", \"teaId\", \"tempHigh\", \"tempLow\", \"phHigh\", \"phLow\", \"doHigh\", \"doLow\", \"brixHigh\", \"brixLow\", \"createdAt\", \"updatedAt\"]",
+									"}",
+									"",
+									"pm.test('Schema is valid', function () {",
+									"    pm.expect(ajv.validate(schema, jsonData)).to.be.true;",
+									"});",
+									"",
+									"pm.test('Data has updated correctly', () => {",
+									"    pm.expect(jsonData.tempHigh).to.eql(25)",
+									"    pm.expect(jsonData.tempLow).to.eql(23)",
+									"    pm.expect(jsonData.phHigh).to.eql(3.5)",
+									"    pm.expect(jsonData.phLow).to.eql(3)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"tempHigh\": 25,\n\t\"tempLow\": 23,\n\t\"phHigh\": 3.5,\n\t\"phLow\": 3\n}"
+						},
+						"url": {
+							"raw": "{{api}}/tanks/:tankId",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"tanks",
+								":tankId"
+							],
+							"variable": [
+								{
+									"key": "tankId",
+									"value": "{{tankId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Invalid] Update tank duplicated (name) [TBD]",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "1df4a04c-f0f2-4042-86f1-39c879870080",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "6b99f20c-1248-45dc-be64-a0381080af44",
+								"exec": [
+									"pm.test(\"response is 400 error\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"error message\", () => {",
+									"    pm.expect(jsonData.error).to.eql(\"tank name is already existed\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"tank1\"\n}"
+						},
+						"url": {
+							"raw": "{{api}}/tanks/:tankId",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"tanks",
+								":tankId"
+							],
+							"variable": [
+								{
+									"key": "tankId",
+									"value": "{{tankId2}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Invalid] Update tank (wrong tankId) [TBD]",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7e33ed27-5d4d-4410-98de-43f64a52bb9a",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "5543e977-00b7-40fd-8e80-e7e70563373b",
+								"exec": [
+									"pm.test(\"response is 404 error\", () => {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"error message\", () => {",
+									"    pm.expect(jsonData.error).to.eql(\"Wrong tank id\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"tempHigh\": 25,\n\t\"tempLow\": 23,\n\t\"phHigh\": 3.5,\n\t\"phLow\": 3\n}"
+						},
+						"url": {
+							"raw": "{{api}}/tanks/:tankId",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"tanks",
+								":tankId"
+							],
+							"variable": [
+								{
+									"key": "tankId",
+									"value": "9999"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get tanks",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "65ff89c2-4f3e-4a31-9f77-6e08cd65a35d",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "4b5fbae1-a1c4-42fb-bb7e-40856afe4376",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const Ajv = require('ajv');",
+									"const ajv = new Ajv({ logger: console });",
+									"const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"        id: { type: \"number\" },",
+									"        name: { type: \"string\" },",
+									"        teaId: { type: \"number\" },",
+									"        tempHigh: { type: [\"number\", \"null\"] },",
+									"        tempLow: { type: [\"number\", \"null\"] },",
+									"        phHigh: { type: [\"number\", \"null\"] },",
+									"        phLow: { type: [\"number\", \"null\"] },",
+									"        doHigh: { type: [\"number\", \"null\"] },",
+									"        doLow: { type: [\"number\", \"null\"] },",
+									"        brixHigh: { type: [\"number\", \"null\"] },",
+									"        brixLow: { type: [\"number\", \"null\"] },",
+									"        createdAt: { type: \"number\" },",
+									"        updatedAt: { type: \"number\" },",
+									"    },",
+									"    required: [\"id\", \"name\", \"teaId\", \"tempHigh\", \"tempLow\", \"phHigh\", \"phLow\", \"doHigh\", \"doLow\", \"brixHigh\", \"brixLow\", \"createdAt\", \"updatedAt\"]",
+									"}",
+									"",
+									"pm.test('Schema is valid', function () {",
+									"    jsonData.forEach((data) => {",
+									"        pm.expect(ajv.validate(schema, data)).to.be.true;",
+									"    })",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api}}/tanks",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"tanks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Valid] Delete tank",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b6e72194-cc79-46b5-b501-1f6aab22ff3c",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "0e71cd93-69f2-43a4-87f8-070f361d9104",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const tankId = postman.getEnvironmentVariable(\"tankId\");",
+									"pm.expect(jsonData.id).to.eql(tankId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"tankId\": {{tankId}}\n}"
+						},
+						"url": {
+							"raw": "{{api}}/tanks",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"tanks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Valid] Delete tank (all)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "de4804a5-4e9e-46f7-86b5-ef69a5c4a57f",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "9f086e7b-bafb-404b-8fdb-20f2f7f06d9a",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const tankId = postman.getEnvironmentVariable(\"tankId2\");",
+									"pm.expect(jsonData.id).to.eql(tankId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"tankId\": {{tankId2}}\n}"
+						},
+						"url": {
+							"raw": "{{api}}/tanks",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"tanks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Valid] Delete tea",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7a78cb83-48ed-47d0-ba1c-2034e172c594",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "9eb764f9-9d6f-44ec-b431-ef53ffc6e50e",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const teaId = postman.getEnvironmentVariable(\"teaId\");",
+									"pm.expect(jsonData.id).to.eql(teaId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"teaId\": {{teaId}}\n}"
+						},
+						"url": {
+							"raw": "{{api}}/teas",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"teas"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "55737e31-99fe-46e2-82e7-9b59e7c8c24b",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "e60e140c-fee9-4720-a4b4-34f173abd578",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
 			"protocolProfileBehavior": {}
 		},
 		{

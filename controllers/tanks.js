@@ -5,7 +5,7 @@ const models = require('../models');
 
 const teaIdSchema = Joi.number().required().error(() => new Error('tea id is required'));
 const tankIdSchema = Joi.number().required().error(() => new Error('tank id is required'));
-const tankNameSchema = Joi.string().required().error(() => new Error('tanke name is required'));
+const tankNameSchema = Joi.string().required().error(() => new Error('tank name is required'));
 const tankSchema = Joi.object({
   name: Joi.string(),
   teaId: Joi.number(),
