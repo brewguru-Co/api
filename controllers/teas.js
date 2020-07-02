@@ -18,10 +18,23 @@ const teaSchema = Joi.object({
 });
 
 function toTeaObject(rawTea) {
-  const tea = { ...rawTea };
-  tea.createdAt = moment(rawTea.createdAt).unix();
-  tea.updatedAt = moment(rawTea.updatedAt).unix();
-  return tea;
+  const {
+    id, name, tempHighOp, tempLowOp, phHighOp, phLowOp, doHighOp, doLowOp, brixHighOp, brixLowOp,
+  } = rawTea;
+  return {
+    id,
+    name,
+    tempHighOp,
+    tempLowOp,
+    phHighOp,
+    phLowOp,
+    doHighOp,
+    doLowOp,
+    brixHighOp,
+    brixLowOp,
+    createdAt: moment(rawTea.createdAt).unix(),
+    updatedAt: moment(rawTea.updatedAt).unix(),
+  };
 }
 
 async function create(req, res, next) {
@@ -77,7 +90,6 @@ async function remove(req, res, next) {
     const { body } = req;
     const value = await teaIdSchema.validateAsync(body.teaId);
 
-    console.log(body, value)
     const options = {
       where: { id: value },
       raw: true,

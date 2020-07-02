@@ -20,10 +20,24 @@ const tankSchema = Joi.object({
 });
 
 function toTankObject(rawTank) {
-  const tank = { ...rawTank };
-  tank.createdAt = moment(rawTank.createdAt).unix();
-  tank.updatedAt = moment(rawTank.updatedAt).unix();
-  return tank;
+  const {
+    id, name, teaId, tempHigh, tempLow, phHigh, phLow, doHigh, doLow, brixHigh, brixLow,
+  } = rawTank;
+  return {
+    id,
+    name,
+    teaId,
+    tempHigh,
+    tempLow,
+    phHigh,
+    phLow,
+    doHigh,
+    doLow,
+    brixHigh,
+    brixLow,
+    createdAt: moment(rawTank.createdAt).unix(),
+    updatedAt: moment(rawTank.updatedAt).unix(),
+  };
 }
 
 async function create(req, res, next) {

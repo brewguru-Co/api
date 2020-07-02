@@ -1,0 +1,295 @@
+{
+	"info": {
+		"_postman_id": "db8f4544-51d6-490b-b58b-b4ac5efa3529",
+		"name": "Brewguru",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Pre-run",
+			"item": [
+				{
+					"name": "Server health check and setting env",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "29d208dd-65eb-4a22-abef-2081bfc6f8b3",
+								"exec": [
+									"pm.environment.set(\"api\", \"http://localhost:3000\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "b13c16ee-8cfc-4c99-8311-186b5d1a2c0c",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"response should be 'Welcome to Brewguru api server'\", function () {",
+									"    pm.expect(pm.response.text()).to.eql('Welcome to Brewguru api server');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Teas",
+			"item": [
+				{
+					"name": "[Valid] Create tea (only required)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "df353185-fdef-436e-a140-c143a08d7897",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "5530c289-bc33-436c-8b87-a083d16be2ce",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const Ajv = require('ajv');",
+									"const ajv = new Ajv({ logger: console });",
+									"const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"        id: { type: \"number\" },",
+									"        name: { type: \"string\" },",
+									"        tempHighOp: { type: [\"number\", \"null\"]},",
+									"        tempLowOp: { type: [\"number\", \"null\"]},",
+									"        phHighOp: { type: [\"number\", \"null\"]},",
+									"        phLowOp: { type: [\"number\", \"null\"]},",
+									"        doHighOp: { type: [\"number\", \"null\"]},",
+									"        doLowOp: { type: [\"number\", \"null\"]},",
+									"        brixHighOp: { type: [\"number\", \"null\"]},",
+									"        brixLowOp: { type: [\"number\", \"null\"]},",
+									"        createdAt: { type: \"number\" },",
+									"        updatedAt: { type: \"number\" },",
+									"    },",
+									"    required: [\"id\", \"name\", \"tempHighOp\", \"tempLowOp\", \"phHighOp\", \"phLowOp\", \"doHighOp\",",
+									"        \"doLowOp\", \"brixHighOp\", \"brixLowOp\", \"createdAt\", \"updatedAt\"]",
+									"}",
+									"",
+									"pm.test('Schema is valid', function() {",
+									"    pm.expect(ajv.validate(schema, jsonData)).to.be.true;",
+									"});",
+									"",
+									"pm.environment.set(\"teaId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"kombucha\"\n}"
+						},
+						"url": {
+							"raw": "{{api}}/teas",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"teas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get teas",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8c36d5bb-4bbd-434c-93cd-35c992db6adb",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "8e517886-14ed-440c-a557-e6989dfe05b1",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const Ajv = require('ajv');",
+									"const ajv = new Ajv({ logger: console });",
+									"const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"        id: { type: \"number\" },",
+									"        name: { type: \"string\" },",
+									"        tempHighOp: { type: [\"number\", \"null\"]},",
+									"        tempLowOp: { type: [\"number\", \"null\"]},",
+									"        phHighOp: { type: [\"number\", \"null\"]},",
+									"        phLowOp: { type: [\"number\", \"null\"]},",
+									"        doHighOp: { type: [\"number\", \"null\"]},",
+									"        doLowOp: { type: [\"number\", \"null\"]},",
+									"        brixHighOp: { type: [\"number\", \"null\"]},",
+									"        brixLowOp: { type: [\"number\", \"null\"]},",
+									"        createdAt: { type: \"number\" },",
+									"        updatedAt: { type: \"number\" },",
+									"    },",
+									"    required: [\"id\", \"name\", \"tempHighOp\", \"tempLowOp\", \"phHighOp\", \"phLowOp\", \"doHighOp\",",
+									"        \"doLowOp\", \"brixHighOp\", \"brixLowOp\", \"createdAt\", \"updatedAt\"]",
+									"}",
+									"",
+									"pm.test('Schema is valid', function() {",
+									"    jsonData.forEach((data) => {",
+									"        pm.expect(ajv.validate(schema, data)).to.be.true;",
+									"    })",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api}}/teas",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"teas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Valid] Delete tea",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a658340c-ed77-4c2b-b787-0e59259d0e55",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "75f77a1f-a96f-4bb1-9b81-61d32d330f54",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"teaId\": {{teaId}}\n}"
+						},
+						"url": {
+							"raw": "{{api}}/teas",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"teas"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Tanks",
+			"item": [],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Notifications",
+			"item": [],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

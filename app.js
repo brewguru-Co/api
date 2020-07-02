@@ -16,18 +16,25 @@ app.use('/', indexRouter);
 app.use('/teas', teasRouter);
 app.use('/tanks', tankRouter);
 
+app.set('json replacer', (key, value) => {
+  // undefined values are set to `null`
+  if (typeof value === 'undefined') return null;
+  return value;
+});
+
 // catch 404 and forward to error handler
 app.use((req, res, next) => next(createError(404)));
 
 // error handler
-app.use((err, req, res) => {
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
   const errCode = err.status || 500;
   res.status(errCode);
 
   if (errCode >= 500) {
-    res.send('Internal server error');
+    res.send({ error: 'Internal server error' });
   } else {
-    res.send(err.message);
+    res.send({ error: err.message });
   }
 });
 
