@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const indexRouter = require('./routes/index');
 const teasRouter = require('./routes/teas');
 const tankRouter = require('./routes/tanks');
+const notificationRouter = require('./routes/notifications');
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/', indexRouter);
 app.use('/teas', teasRouter);
 app.use('/tanks', tankRouter);
+app.use('/notifications', notificationRouter);
 
 app.set('json replacer', (key, value) => {
   // undefined values are set to `null`
