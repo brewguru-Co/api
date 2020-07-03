@@ -5,8 +5,9 @@
 | name | type | description |
 | --- | --- | --- |
 | id | number | notification identifier |
-| email | string | email |
-| phone | string | phone |
+| to | string | email or phone |
+| on | boolean | notification on/off |
+| sentAt | timestamp | lastest notified time |
 
 ## Create a notification
 Create a notification
@@ -17,8 +18,8 @@ Create a notification
 ### Body Parameters
 | name | type | description |
 | --- | --- | --- |
-| email | string | email |
-| phone | string | phone |
+| to | string | (**required**) email or phone |
+| on | boolean | notification on/off (default: on) |
 
 ### Request Example
 ```sh
@@ -26,8 +27,8 @@ curl -X POST
     -H "accept-version: 2.0.0"
     -H "Content-Type: application/json"
     -d '{
-      "email": "cs@brewguru.com",
-      "phone": "01012341234"
+      "to": "cs@brewguru.com",
+      "on": false,
     }'
      "http://{end-point}/notifications"
 ```
@@ -39,8 +40,9 @@ Created notification object on success, or error on failure.
 ``` json
 {
   "id": 1,
-  "email": "cs@brewguru.com",
-  "phone": "01012341234"
+  "to": "cs@brewguru.com",
+  "on": false,
+  "sentAt": null
 }
 ```
 
@@ -63,8 +65,9 @@ Retrieved result list of notifications on success, or error on failure.
 ``` json
 [{
   "id": 1,
-  "email": "cs@brewguru.com",
-  "phone": "01012341234"
+  "to": "cs@brewguru.com",
+  "on": true,
+  "sentAt": null
 }]
 ```
 
@@ -82,8 +85,8 @@ Update a notification
 ### Body Parameters
 | name | type | description |
 | --- | --- | --- |
-| email | string | email |
-| phone | string | phone |
+| to | string | email or phone |
+| on | boolean | notification on/off (default: on) |
 
 ### Request Example
 ```sh
@@ -91,7 +94,7 @@ curl -X PATCH
     -H "accept-version: 2.0.0"
     -H "Content-Type: application/json"
     -d '{
-      "email": "dev@brewguru.com"
+      "to": "dev@brewguru.com"
     }'
      "http://{end-point}/notifications/1"
 ```
@@ -103,8 +106,9 @@ Updated notification object on success, or error on failure.
 ``` json
 {
   "id": 1,
-  "email": "dev@brewguru.com",
-  "phone": "01012341234"
+  "to": "dev@brewguru.com",
+  "on": true,
+  "sentAt": null
 }
 ```
 

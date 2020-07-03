@@ -5,23 +5,19 @@ const models = require('../models');
 
 const notificationIdSchema = Joi.number().required().error(() => new Error('notification id is required'));
 const notificationSchema = Joi.object({
-  email: Joi.string().email({ minDomainSegments: 2 }),
-  phone: Joi.string().min(10).max(11),
+  to: Joi.string().required(),
   on: Joi.boolean(),
-}).xor('email', 'phone');
+});
 
 function toNotificationObject(rawNotification) {
   const {
-    id, email, phone, on, sentAt,
+    id, to, on, sentAt,
   } = rawNotification;
   return {
     id,
-    email,
-    phone,
+    to,
     on,
-    sentAt,
-    createdAt: moment(rawNotification.createdAt).unix(),
-    updatedAt: moment(rawNotification.updatedAt).unix(),
+    sentAt: moment(sentAt).unix(),
   };
 }
 
@@ -43,7 +39,7 @@ async function update(req, res, next) {
   try {
     const { body, params } = req;
     const value = await notificationSchema.validateAsync(body);
-    await notificationIdSchema.validate(params.tankId);
+    await notificationIdSchema.validate(params.notificationId);
 
     const options = {
       where: { id: params.notificationId },

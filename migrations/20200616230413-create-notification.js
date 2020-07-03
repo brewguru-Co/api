@@ -8,13 +8,17 @@ module.exports = {
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-    email: {
+    to: {
       unique: true,
       type: Sequelize.STRING,
     },
-    phone: {
-      unique: true,
+    on: {
+      allowNull: false,
+      defaultValue: 1,
       type: Sequelize.STRING,
+    },
+    sentAt: {
+      type: Sequelize.DATE,
     },
     createdAt: {
       allowNull: false,
