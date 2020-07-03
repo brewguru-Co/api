@@ -3,9 +3,10 @@ const Joi = require('@hapi/joi');
 const moment = require('moment');
 const models = require('../models');
 
+const notificationToSchema = Joi.string().required().error(() => new Error('to is required'));
 const notificationIdSchema = Joi.number().required().error(() => new Error('notification id is required'));
 const notificationSchema = Joi.object({
-  to: Joi.string().required(),
+  to: Joi.string(),
   on: Joi.boolean(),
 });
 
@@ -16,7 +17,7 @@ function toNotificationObject(rawNotification) {
   return {
     id,
     to,
-    on,
+    on: Boolean(on),
     sentAt: moment(sentAt).unix(),
   };
 }
@@ -25,6 +26,7 @@ async function create(req, res, next) {
   try {
     const { body } = req;
     const value = await notificationSchema.validateAsync(body);
+    await notificationToSchema.validateAsync(body.to);
 
     return models.notification
       .create(value)

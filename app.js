@@ -34,9 +34,9 @@ app.use((err, req, res, next) => {
   res.status(errCode);
 
   if (errCode >= 500) {
-    res.send({ error: 'Internal server error' });
+    res.json({ error: 'Internal server error' });
   } else {
-    res.send({ error: err.message });
+    res.json({ error: err.message });
   }
 });
 

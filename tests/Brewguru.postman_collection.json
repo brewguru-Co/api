@@ -1723,7 +1723,659 @@
 		},
 		{
 			"name": "Notifications",
-			"item": [],
+			"item": [
+				{
+					"name": "[Valid] Create notification (only required)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5edb5cf9-44e1-4202-9ae3-7667c21cd0f9",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "02406559-10e2-4f49-90ed-64dc08ac068e",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const Ajv = require('ajv');",
+									"const ajv = new Ajv({ logger: console });",
+									"const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"        id: { type: \"number\" },",
+									"        to: { type: \"string\" },",
+									"        on: { type: \"boolean\"},",
+									"        sentAt: { type: [\"number\", \"null\"] },",
+									"    },",
+									"    required: [\"id\", \"to\", \"on\", \"sentAt\"]",
+									"}",
+									"",
+									"pm.test('Schema is valid', function () {",
+									"    pm.expect(ajv.validate(schema, jsonData)).to.be.true;",
+									"});",
+									"",
+									"pm.environment.set(\"notificationId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"to\": \"01066470203\"\n}"
+						},
+						"url": {
+							"raw": "{{api}}/notifications",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Valid] Create notification (all)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "24291c07-a17c-4b19-8273-d9881ccbd9a3",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "42cb9a9b-fd85-4d8b-9705-6717c78df197",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const Ajv = require('ajv');",
+									"const ajv = new Ajv({ logger: console });",
+									"const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"        id: { type: \"number\" },",
+									"        to: { type: \"string\" },",
+									"        on: { type: \"boolean\"},",
+									"        sentAt: { type: [\"number\", \"null\"] },",
+									"    },",
+									"    required: [\"id\", \"to\", \"on\", \"sentAt\"]",
+									"}",
+									"",
+									"pm.test('Schema is valid', function () {",
+									"    pm.expect(ajv.validate(schema, jsonData)).to.be.true;",
+									"});",
+									"",
+									"pm.environment.set(\"notificationId2\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"to\": \"cs@brewguru.com\",\n\t\"on\": false\n}"
+						},
+						"url": {
+							"raw": "{{api}}/notifications",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Invalid] Create notification without (to)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b47dff6f-203d-420c-8339-ea733c049e65",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "c0a78064-7c41-4b09-b23c-5c57b0a8a99c",
+								"exec": [
+									"pm.test(\"response is 400 error\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"error message\", () => {",
+									"    pm.expect(jsonData.error).to.eql(\"to is required\");",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}"
+						},
+						"url": {
+							"raw": "{{api}}/notifications",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Invalid] Create notification duplicated (to) [TBD]",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "68681597-9dfd-4f66-aa65-c6a11f2df46b",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "7a2484dc-6352-4609-b300-6a0d00e42855",
+								"exec": [
+									"pm.test(\"response is 404 error\", () => {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"error message\", () => {",
+									"    pm.expect(jsonData.error).to.eql(\"tea name is already existed\");",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"kombucha\"\n}"
+						},
+						"url": {
+							"raw": "{{api}}/notifications",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Valid] Update notification",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c782b28f-1b37-4d30-a24a-5876d65c06dd",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "6d693c53-dfbb-434b-ba79-420279fefc94",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const Ajv = require('ajv');",
+									"const ajv = new Ajv({ logger: console });",
+									"const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"        id: { type: \"number\" },",
+									"        to: { type: \"string\" },",
+									"        on: { type: \"boolean\" },",
+									"        sentAt: { type: [\"number\", \"null\"] },",
+									"    },",
+									"    required: [\"id\", \"to\", \"on\", \"sentAt\"]",
+									"}",
+									"",
+									"pm.test('Schema is valid', function () {",
+									"    pm.expect(ajv.validate(schema, jsonData)).to.be.true;",
+									"});",
+									"",
+									"pm.test('Data has updated correctly', () => {",
+									"    pm.expect(jsonData.on).to.eql(false);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"on\": false\n}"
+						},
+						"url": {
+							"raw": "{{api}}/notifications/:notificationId",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"notifications",
+								":notificationId"
+							],
+							"variable": [
+								{
+									"key": "notificationId",
+									"value": "{{notificationId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Invalid] Update notification duplicated (to) [TBD]",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5de36ee5-a511-4b43-baef-0519b5c56033",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "1e3e7287-05d4-48be-855d-1206c1087664",
+								"exec": [
+									"pm.test(\"response is 400 error\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"error message\", () => {",
+									"    pm.expect(jsonData.error).to.eql(\"to is already existed\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"to\": \"01066470203\"\n}"
+						},
+						"url": {
+							"raw": "{{api}}/notifications/:notificationId",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"notifications",
+								":notificationId"
+							],
+							"variable": [
+								{
+									"key": "notificationId",
+									"value": "{{notificationId2}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Invalid] Update notification (wrong notificationId) [TBD]",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "81f452d5-ec08-4424-9c92-f1b982037840",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "34251e1c-9358-46c2-a1bb-c902e2d7d3b0",
+								"exec": [
+									"pm.test(\"response is 404 error\", () => {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"error message\", () => {",
+									"    pm.expect(jsonData.error).to.eql(\"Wrong notification id\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"to\": \"01012341234\"\n}"
+						},
+						"url": {
+							"raw": "{{api}}/notifications/:notificationId",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"notifications",
+								":notificationId"
+							],
+							"variable": [
+								{
+									"key": "notificationId",
+									"value": "9999"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get notifications",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7bd7c017-d1f2-4da9-b44e-dc098cd6743f",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "c6daba54-e73f-4de4-84eb-1002fe929a9c",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const Ajv = require('ajv');",
+									"const ajv = new Ajv({ logger: console });",
+									"const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"        id: { type: \"number\" },",
+									"        to: { type: \"string\" },",
+									"        on: { type: \"boolean\"},",
+									"        sentAt: { type: [\"number\", \"null\"] },",
+									"    },",
+									"    required: [\"id\", \"to\", \"on\", \"sentAt\"]",
+									"}",
+									"",
+									"pm.test('Schema is valid', function () {",
+									"    jsonData.forEach((data) => {",
+									"        pm.expect(ajv.validate(schema, data)).to.be.true;",
+									"    })",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api}}/notifications",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Valid] Delete notification",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "0cbda0ba-d800-46c2-9320-a26a7c65921d",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "6ce243ac-9c52-4586-b426-4b778eac5762",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const notificationId = postman.getEnvironmentVariable(\"notificationId\");",
+									"pm.expect(jsonData.id).to.eql(notificationId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"notificationId\": {{notificationId}}\n}"
+						},
+						"url": {
+							"raw": "{{api}}/notifications",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Valid] Delete notification (all)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "29593b75-5578-45fd-bbf2-2860f6fb8560",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "34b8d0aa-3d68-4764-81a0-8b45866b16af",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const notificationId = postman.getEnvironmentVariable(\"notificationId2\");",
+									"pm.expect(jsonData.id).to.eql(notificationId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"notificationId\": {{notificationId2}}\n}"
+						},
+						"url": {
+							"raw": "{{api}}/notifications",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				}
+			],
 			"protocolProfileBehavior": {}
 		}
 	],
