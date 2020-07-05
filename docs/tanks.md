@@ -15,6 +15,7 @@
 | doLow | number | min limit value of DO |
 | brixHigh | number | max limit value of Brix |
 | brixLow | number | min limit value of Brix |
+| startedAt | timestamp | fermentation start time |
 
 ## Create a Tank
 Create a tank
@@ -35,6 +36,7 @@ Create a tank
 | doLow | number | min limit value of DO |
 | brixHigh | number | max limit value of Brix |
 | brixLow | number | min limit value of Brix |
+| startedAt | timestamp | fermentation start time (default current time) |
 
 ### Request Example
 ```sh
@@ -71,6 +73,7 @@ Created tank object on success, or error on failure.
   "doLow": 78,
   "brixHigh": null,
   "brixLow": null,
+  "startedAt": 1593932595
 }
 ```
 
@@ -103,6 +106,7 @@ Retrieved result list of tanks on success, or error on failure.
   "doLow": 78,
   "brixHigh": null,
   "brixLow": null,
+  "startedAt": 1593932595
 }]
 ```
 
@@ -130,6 +134,7 @@ Update a tank
 | doLow | number | min limit value of DO |
 | brixHigh | number | max limit value of Brix |
 | brixLow | number | min limit value of Brix |
+| startedAt | timestamp | fermentation start time (default current time) |
 
 ### Request Example
 ```sh
@@ -159,6 +164,7 @@ Updated tank object on success, or error on failure.
   "doLow": 78,
   "brixHigh": null,
   "brixLow": null,
+  "startedAt": 1593932595
 }
 ```
 

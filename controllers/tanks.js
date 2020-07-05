@@ -17,6 +17,7 @@ const tankSchema = Joi.object({
   doLow: Joi.number(),
   brixHigh: Joi.number(),
   brixLow: Joi.number(),
+  startedAt: Joi.number(),
 });
 
 function toTankObject(rawTank) {
@@ -35,6 +36,7 @@ function toTankObject(rawTank) {
     doLow,
     brixHigh,
     brixLow,
+    startedAt: moment(rawTank.startedAt).unix(),
     createdAt: moment(rawTank.createdAt).unix(),
     updatedAt: moment(rawTank.updatedAt).unix(),
   };
@@ -46,6 +48,8 @@ async function create(req, res, next) {
     const value = await tankSchema.validateAsync(body);
     await tankNameSchema.validateAsync(body.name);
     await teaIdSchema.validateAsync(body.teaId);
+
+    if (!body.startedAt) value.startedAt = Date.now();
 
     return models.tank
       .create(value)
