@@ -1,3 +1,5 @@
+const logger = require('./logger');
+
 function handleSequelizeError(err) {
   switch (err.name) {
     case 'SequelizeUniqueConstraintError':
@@ -10,6 +12,7 @@ function handleSequelizeError(err) {
 }
 
 function build(err) {
+  logger.error(err);
   if (err.code || err.statusCode) {
     return { code: err.code || err.statusCode, message: err.message };
   }

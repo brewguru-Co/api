@@ -8,6 +8,7 @@ const tankRouter = require('./routes/tanks');
 const notificationRouter = require('./routes/notifications');
 
 const error = require('./helpers/error');
+const logger = require('./helpers/logger');
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use((req, res, next) => next(createError(404)));
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   const errObj = error.build(err);
+  logger.error(errObj);
   res.status(errObj.code);
   res.json({ error: errObj.message });
 });
