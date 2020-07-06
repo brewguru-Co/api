@@ -77,7 +77,7 @@ async function update(req, res, next) {
         if (updated) {
           models.tank.findOne(options).then((tank) => res.send(toTankObject(tank)));
         } else {
-          next(createError(404, 'Nothing to update'));
+          next(createError(400, "Bad request (tnakId doesn't exit)"));
         }
       })
       .catch((err) => next(err));
@@ -109,12 +109,12 @@ async function remove(req, res, next) {
         if (deleted) {
           res.send({ id: value });
         } else {
-          next(createError(404, 'Nothing to delete'));
+          next(createError(400, "Bad request (tnakId doesn't exit)"));
         }
       })
       .catch((err) => next(err));
   } catch (e) {
-    return next(createError(404, e.message));
+    return next(createError(400, e.message));
   }
 }
 

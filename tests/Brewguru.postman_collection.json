@@ -237,8 +237,8 @@
 							"script": {
 								"id": "021f00f8-8796-4ea8-b48e-d815520d1591",
 								"exec": [
-									"pm.test(\"response is 404 error\", () => {",
-									"    pm.response.to.have.status(404);",
+									"pm.test(\"response is 400 error\", () => {",
+									"    pm.response.to.have.status(400);",
 									"});",
 									"",
 									"const jsonData = pm.response.json();",
@@ -278,7 +278,7 @@
 					"response": []
 				},
 				{
-					"name": "[Invalid] Create tea duplicated (name) [TBD]",
+					"name": "[Invalid] Create tea duplicated (name)",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -295,14 +295,14 @@
 							"script": {
 								"id": "2723c7b5-cce4-4f75-9b74-af6678ad0381",
 								"exec": [
-									"pm.test(\"response is 404 error\", () => {",
-									"    pm.response.to.have.status(404);",
+									"pm.test(\"response is 400 error\", () => {",
+									"    pm.response.to.have.status(400);",
 									"});",
 									"",
 									"const jsonData = pm.response.json();",
 									"",
 									"pm.test(\"error message\", () => {",
-									"    pm.expect(jsonData.error).to.eql(\"tea name is already existed\");",
+									"    pm.expect(jsonData.error).to.eql(\"Bad request (kombucha already exist)\");",
 									"})",
 									""
 								],
@@ -428,7 +428,7 @@
 					"response": []
 				},
 				{
-					"name": "[Invalid] Update tea duplicated (name) [TBD]",
+					"name": "[Invalid] Update tea duplicated (name)",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -445,14 +445,14 @@
 							"script": {
 								"id": "da9c8065-7394-4a6d-9e7b-ddb83b9ca5fb",
 								"exec": [
-									"pm.test(\"response is 404 error\", () => {",
-									"    pm.response.to.have.status(404);",
+									"pm.test(\"response is 400 error\", () => {",
+									"    pm.response.to.have.status(400);",
 									"});",
 									"",
 									"const jsonData = pm.response.json();",
 									"",
 									"pm.test(\"error message\", () => {",
-									"    pm.expect(jsonData.error).to.eql(\"tea name is already existed\");",
+									"    pm.expect(jsonData.error).to.eql(\"Bad request (kombucha already exist)\");",
 									"})"
 								],
 								"type": "text/javascript"
@@ -470,7 +470,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"tempHighOp\": 25,\n\t\"tempLowOp\": 23,\n\t\"phHighOp\": 3.5,\n\t\"phLowOp\": 3\n}"
+							"raw": "{\n\t\"name\": \"kombucha\"\n}"
 						},
 						"url": {
 							"raw": "{{api}}/teas/:teaId",
@@ -484,7 +484,7 @@
 							"variable": [
 								{
 									"key": "teaId",
-									"value": "{{teaId}}"
+									"value": "{{teaId2}}"
 								}
 							]
 						}
@@ -492,7 +492,7 @@
 					"response": []
 				},
 				{
-					"name": "[Invalid] Update tea (wrong teaId) [TBD]",
+					"name": "[Invalid] Update tea (wrong teaId)",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -509,14 +509,14 @@
 							"script": {
 								"id": "58e5034e-3852-491e-876c-9bba85a51390",
 								"exec": [
-									"pm.test(\"response is 404 error\", () => {",
-									"    pm.response.to.have.status(404);",
+									"pm.test(\"response is 400 error\", () => {",
+									"    pm.response.to.have.status(400);",
 									"});",
 									"",
 									"const jsonData = pm.response.json();",
 									"",
 									"pm.test(\"error message\", () => {",
-									"    pm.expect(jsonData.error).to.eql(\"Wrong tea id\");",
+									"    pm.expect(jsonData.error).to.eql(\"Bad request (teaId doesn't exit)\");",
 									"})"
 								],
 								"type": "text/javascript"
@@ -874,10 +874,11 @@
 									"        doLow: { type: [\"number\", \"null\"] },",
 									"        brixHigh: { type: [\"number\", \"null\"] },",
 									"        brixLow: { type: [\"number\", \"null\"] },",
+									"        startedAt: { type: \"number\" },",
 									"        createdAt: { type: \"number\" },",
 									"        updatedAt: { type: \"number\" },",
 									"    },",
-									"    required: [\"id\", \"name\", \"teaId\", \"tempHigh\", \"tempLow\", \"phHigh\", \"phLow\", \"doHigh\", \"doLow\", \"brixHigh\", \"brixLow\", \"createdAt\", \"updatedAt\"]",
+									"    required: [\"id\", \"name\", \"teaId\", \"tempHigh\", \"tempLow\", \"phHigh\", \"phLow\", \"doHigh\", \"doLow\", \"brixHigh\", \"brixLow\", \"startedAt\", \"createdAt\", \"updatedAt\"]",
 									"}",
 									"",
 									"pm.test('Schema is valid', function () {",
@@ -954,10 +955,11 @@
 									"        doLow: { type: [\"number\", \"null\"] },",
 									"        brixHigh: { type: [\"number\", \"null\"] },",
 									"        brixLow: { type: [\"number\", \"null\"] },",
+									"        startedAt: { type: \"number\" },",
 									"        createdAt: { type: \"number\" },",
 									"        updatedAt: { type: \"number\" },",
 									"    },",
-									"    required: [\"id\", \"name\", \"teaId\", \"tempHigh\", \"tempLow\", \"phHigh\", \"phLow\", \"doHigh\", \"doLow\", \"brixHigh\", \"brixLow\", \"createdAt\", \"updatedAt\"]",
+									"    required: [\"id\", \"name\", \"teaId\", \"tempHigh\", \"tempLow\", \"phHigh\", \"phLow\", \"doHigh\", \"doLow\", \"brixHigh\", \"brixLow\", \"startedAt\", \"createdAt\", \"updatedAt\"]",
 									"}",
 									"",
 									"pm.test('Schema is valid', function () {",
@@ -1266,10 +1268,11 @@
 									"        doLow: { type: [\"number\", \"null\"] },",
 									"        brixHigh: { type: [\"number\", \"null\"] },",
 									"        brixLow: { type: [\"number\", \"null\"] },",
+									"        startedAt: { type: \"number\" },",
 									"        createdAt: { type: \"number\" },",
 									"        updatedAt: { type: \"number\" },",
 									"    },",
-									"    required: [\"id\", \"name\", \"teaId\", \"tempHigh\", \"tempLow\", \"phHigh\", \"phLow\", \"doHigh\", \"doLow\", \"brixHigh\", \"brixLow\", \"createdAt\", \"updatedAt\"]",
+									"    required: [\"id\", \"name\", \"teaId\", \"tempHigh\", \"tempLow\", \"phHigh\", \"phLow\", \"doHigh\", \"doLow\", \"brixHigh\", \"brixLow\", \"startedAt\", \"createdAt\", \"updatedAt\"]",
 									"}",
 									"",
 									"pm.test('Schema is valid', function () {",
@@ -1486,10 +1489,11 @@
 									"        doLow: { type: [\"number\", \"null\"] },",
 									"        brixHigh: { type: [\"number\", \"null\"] },",
 									"        brixLow: { type: [\"number\", \"null\"] },",
+									"        startedAt: { type: \"number\" },",
 									"        createdAt: { type: \"number\" },",
 									"        updatedAt: { type: \"number\" },",
 									"    },",
-									"    required: [\"id\", \"name\", \"teaId\", \"tempHigh\", \"tempLow\", \"phHigh\", \"phLow\", \"doHigh\", \"doLow\", \"brixHigh\", \"brixLow\", \"createdAt\", \"updatedAt\"]",
+									"    required: [\"id\", \"name\", \"teaId\", \"tempHigh\", \"tempLow\", \"phHigh\", \"phLow\", \"doHigh\", \"doLow\", \"brixHigh\", \"brixLow\", \"startedAt\", \"createdAt\", \"updatedAt\"]",
 									"}",
 									"",
 									"pm.test('Schema is valid', function () {",

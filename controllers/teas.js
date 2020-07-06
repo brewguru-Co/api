@@ -48,7 +48,7 @@ async function create(req, res, next) {
       .then((tea) => res.send(toTeaObject(tea.dataValues)))
       .catch((err) => next(err));
   } catch (e) {
-    return next(createError(404, e.message));
+    return next(createError(400, e.message));
   }
 }
 
@@ -69,12 +69,12 @@ async function update(req, res, next) {
         if (updated) {
           models.tea.findOne(options).then((tea) => res.send(toTeaObject(tea)));
         } else {
-          next(createError(404, 'Nothing to update'));
+          next(createError(400, "Bad request (teaId doesn't exit)"));
         }
       })
       .catch((err) => next(err));
   } catch (e) {
-    return next(createError(404, e.message));
+    return next(createError(400, e.message));
   }
 }
 
@@ -101,12 +101,12 @@ async function remove(req, res, next) {
         if (deleted) {
           res.send({ id: value });
         } else {
-          next(createError(404, 'Nothing to delete'));
+          next(createError(400, "Bad request (teaId doesn't exit)"));
         }
       })
       .catch((err) => next(err));
   } catch (e) {
-    return next(createError(404, e.message));
+    return next(createError(400, e.message));
   }
 }
 

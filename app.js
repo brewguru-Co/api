@@ -7,6 +7,8 @@ const teasRouter = require('./routes/teas');
 const tankRouter = require('./routes/tanks');
 const notificationRouter = require('./routes/notifications');
 
+const error = require('./helpers/error');
+
 const app = express();
 
 app.use(morgan('dev'));
@@ -30,14 +32,9 @@ app.use((req, res, next) => next(createError(404)));
 // error handler
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
-  const errCode = err.status || 500;
-  res.status(errCode);
-
-  if (errCode >= 500) {
-    res.json({ error: 'Internal server error' });
-  } else {
-    res.json({ error: err.message });
-  }
+  const errObj = error.build(err);
+  res.status(errObj.code);
+  res.json({ error: errObj.message });
 });
 
 module.exports = app;
