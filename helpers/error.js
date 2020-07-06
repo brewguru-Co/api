@@ -1,7 +1,7 @@
 function handleSequelizeError(err) {
   switch (err.name) {
     case 'SequelizeUniqueConstraintError':
-      return { code: 400, message: `Bad request (${err.fields.name} already exist)` };
+      return { code: 400, message: `Bad request (${Object.values(err.fields)[0]} already exist)` };
     case 'SequelizeForeignKeyConstraintError':
       return { code: 400, message: `Bad request (${err.fields[0]} doesn't exist)` };
     default:

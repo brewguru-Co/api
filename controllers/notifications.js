@@ -55,7 +55,7 @@ async function update(req, res, next) {
           models.notification.findOne(options)
             .then((notification) => res.send(toNotificationObject(notification)));
         } else {
-          next(createError(404, 'Nothing to update'));
+          next(createError(400, "Bad request (notificationId doesn't exit)"));
         }
       })
       .catch((err) => next(err));
@@ -89,7 +89,7 @@ async function remove(req, res, next) {
         if (deleted) {
           res.send({ id: value });
         } else {
-          next(createError(404, 'Nothing to delete'));
+          next(createError(400, "Bad request (notificationId doesn't exit)"));
         }
       })
       .catch((err) => next(err));

@@ -1929,7 +1929,7 @@
 					"response": []
 				},
 				{
-					"name": "[Invalid] Create notification duplicated (to) [TBD]",
+					"name": "[Invalid] Create notification duplicated (to)",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -1946,14 +1946,14 @@
 							"script": {
 								"id": "7a2484dc-6352-4609-b300-6a0d00e42855",
 								"exec": [
-									"pm.test(\"response is 404 error\", () => {",
-									"    pm.response.to.have.status(404);",
+									"pm.test(\"response is 400 error\", () => {",
+									"    pm.response.to.have.status(400);",
 									"});",
 									"",
 									"const jsonData = pm.response.json();",
 									"",
 									"pm.test(\"error message\", () => {",
-									"    pm.expect(jsonData.error).to.eql(\"tea name is already existed\");",
+									"    pm.expect(jsonData.error).to.eql(\"Bad request (01066470203 already exist)\");",
 									"})",
 									""
 								],
@@ -1972,7 +1972,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"kombucha\"\n}"
+							"raw": "{\n\t\"to\": \"01066470203\"\n}"
 						},
 						"url": {
 							"raw": "{{api}}/notifications",
@@ -2067,7 +2067,7 @@
 					"response": []
 				},
 				{
-					"name": "[Invalid] Update notification duplicated (to) [TBD]",
+					"name": "[Invalid] Update notification duplicated (to)",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -2091,7 +2091,7 @@
 									"const jsonData = pm.response.json();",
 									"",
 									"pm.test(\"error message\", () => {",
-									"    pm.expect(jsonData.error).to.eql(\"to is already existed\");",
+									"    pm.expect(jsonData.error).to.eql(\"Bad request (01066470203 already exist)\");",
 									"})"
 								],
 								"type": "text/javascript"
@@ -2131,7 +2131,7 @@
 					"response": []
 				},
 				{
-					"name": "[Invalid] Update notification (wrong notificationId) [TBD]",
+					"name": "[Invalid] Update notification (wrong notificationId)",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -2148,14 +2148,14 @@
 							"script": {
 								"id": "34251e1c-9358-46c2-a1bb-c902e2d7d3b0",
 								"exec": [
-									"pm.test(\"response is 404 error\", () => {",
-									"    pm.response.to.have.status(404);",
+									"pm.test(\"response is 400 error\", () => {",
+									"    pm.response.to.have.status(400);",
 									"});",
 									"",
 									"const jsonData = pm.response.json();",
 									"",
 									"pm.test(\"error message\", () => {",
-									"    pm.expect(jsonData.error).to.eql(\"Wrong notification id\");",
+									"    pm.expect(jsonData.error).to.eql(\"Bad request (notificationId doesn't exit)\");",
 									"})"
 								],
 								"type": "text/javascript"
