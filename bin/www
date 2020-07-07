@@ -7,6 +7,7 @@ const http = require('http');
 const app = require('../app');
 const models = require('../models');
 const logger = require('../helpers/logger');
+const mongooseLoader = require('../helpers/mongoose');
 
 /**
  * Normalize a port into a number, string, or false.
@@ -73,12 +74,20 @@ function onListening() {
 }
 
 /**
+ * Mysql and MongoDB Sync
  * Listen on provided port, on all network interfaces.
  */
 
-// sync() will create all table if they doesn't exist in database
-models.sequelize.sync().then(() => {
+async function start() {
+  // sync() will create all table if they doesn't exist in database
+  await models.sequelize.sync();
+  logger.info('mysql connected');
+  await mongooseLoader();
+  logger.info('mongoDB connected');
+
   server.listen(port);
   server.on('error', onError);
   server.on('listening', onListening);
-});
+}
+
+start();

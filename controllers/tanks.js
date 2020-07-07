@@ -23,6 +23,7 @@ const tankSchema = Joi.object({
 function toTankObject(rawTank) {
   const {
     id, name, teaId, tempHigh, tempLow, phHigh, phLow, doHigh, doLow, brixHigh, brixLow,
+    startedAt, createdAt, updatedAt,
   } = rawTank;
   return {
     id,
@@ -36,9 +37,9 @@ function toTankObject(rawTank) {
     doLow,
     brixHigh,
     brixLow,
-    startedAt: moment(rawTank.startedAt).unix(),
-    createdAt: moment(rawTank.createdAt).unix(),
-    updatedAt: moment(rawTank.updatedAt).unix(),
+    startedAt: moment(startedAt).unix(),
+    createdAt: moment(createdAt).unix(),
+    updatedAt: moment(updatedAt).unix(),
   };
 }
 

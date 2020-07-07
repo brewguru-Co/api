@@ -5,9 +5,13 @@ const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
 
-// eslint-disable-next-line import/no-dynamic-require
-const config = require(`${__dirname}/../config/config.json`)[env];
-const db = {};
+const config = require('../config/config.json')[env];
+
+const TankData = require('./nosql/tankData');
+
+const db = {
+  TankData,
+};
 
 let sequelize;
 if (config.use_env_variable) {
@@ -17,10 +21,10 @@ if (config.use_env_variable) {
 }
 
 fs
-  .readdirSync(__dirname)
+  .readdirSync(`${__dirname}/rdb`)
   .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
   .forEach((file) => {
-    const model = sequelize.import(path.join(__dirname, file));
+    const model = sequelize.import(path.join(`${__dirname}/rdb`, file));
     db[model.name] = model;
   });
 

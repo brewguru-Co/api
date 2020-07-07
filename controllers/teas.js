@@ -20,6 +20,7 @@ const teaSchema = Joi.object({
 function toTeaObject(rawTea) {
   const {
     id, name, tempHighOp, tempLowOp, phHighOp, phLowOp, doHighOp, doLowOp, brixHighOp, brixLowOp,
+    createdAt, updatedAt,
   } = rawTea;
   return {
     id,
@@ -32,8 +33,8 @@ function toTeaObject(rawTea) {
     doLowOp,
     brixHighOp,
     brixLowOp,
-    createdAt: moment(rawTea.createdAt).unix(),
-    updatedAt: moment(rawTea.updatedAt).unix(),
+    createdAt: moment(createdAt).unix(),
+    updatedAt: moment(updatedAt).unix(),
   };
 }
 
