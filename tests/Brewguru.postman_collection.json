@@ -2381,6 +2381,219 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "TankDatas",
+			"item": [
+				{
+					"name": "[Valid] Create tankData (only required)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "185f5933-47f7-4505-826b-6c7cdfab521f",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "351a60b1-14cd-418e-ab2b-6c93202af7d3",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const Ajv = require('ajv');",
+									"const ajv = new Ajv({ logger: console });",
+									"const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"        name: { type: \"string\" },",
+									"        temp: { type: \"number\" },",
+									"        ph: { type: \"number\" },",
+									"        doxy: { type: \"number\" },",
+									"        brix: { type: \"number\" },",
+									"        createdAt: { type: \"number\" },",
+									"    },",
+									"    required: [\"name\", \"temp\", \"ph\", \"doxy\", \"brix\", \"createdAt\"]",
+									"}",
+									"",
+									"pm.test('Schema is valid', function () {",
+									"    pm.expect(ajv.validate(schema, jsonData)).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"tank1\",\n\t\"temp\": 28,\n\t\"ph\": 3.5,\n\t\"doxy\": 45,\n\t\"brix\": 50\n}"
+						},
+						"url": {
+							"raw": "{{api}}/tankDatas",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"tankDatas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Invalid] Create tankData without (name)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "bef7aae4-63d0-42cb-a90c-6a25bc767034",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "96c17776-2859-430b-857a-6900cc806105",
+								"exec": [
+									"pm.test(\"response is 400 error\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"error message\", () => {",
+									"    pm.expect(jsonData.error).to.eql(\"\\\"name\\\" is required\");",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}"
+						},
+						"url": {
+							"raw": "{{api}}/tankDatas",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"tankDatas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get tankDatas",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e4ab3eaf-5e03-4a3c-83c3-9882a4dcc51c",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "89b37346-7a10-4347-9720-324e5d104015",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const Ajv = require('ajv');",
+									"const ajv = new Ajv({ logger: console });",
+									"const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"        name: { type: \"string\" },",
+									"        temp: { type: \"number\" },",
+									"        ph: { type: \"number\" },",
+									"        doxy: { type: \"number\" },",
+									"        brix: { type: \"number\" },",
+									"        createdAt: { type: \"number\" },",
+									"    },",
+									"    required: [\"name\", \"temp\", \"ph\", \"doxy\", \"brix\", \"createdAt\"]",
+									"}",
+									"",
+									"pm.test('Schema is valid', function () {",
+									"    jsonData.forEach((data) => {",
+									"        pm.expect(ajv.validate(schema, data)).to.be.true;",
+									"    })",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api}}/tankDatas",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"tankDatas"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"protocolProfileBehavior": {}

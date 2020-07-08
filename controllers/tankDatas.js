@@ -4,19 +4,18 @@ const moment = require('moment');
 const models = require('../models');
 
 const tankDataSchema = Joi.object({
-  name: Joi.string(),
-  temp: Joi.number(),
-  ph: Joi.number(),
-  doxy: Joi.number(),
-  brix: Joi.number(),
+  name: Joi.string().required(),
+  temp: Joi.number().required(),
+  ph: Joi.number().required(),
+  doxy: Joi.number().required(),
+  brix: Joi.number().required(),
 });
 
 function toTankDataObject(rawTankData) {
   const {
-    id, name, temp, ph, doxy, brix, createdAt,
+    name, temp, ph, doxy, brix, createdAt,
   } = rawTankData;
   return {
-    id,
     name,
     temp,
     ph,

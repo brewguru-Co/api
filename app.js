@@ -21,7 +21,7 @@ app.use('/', indexRouter);
 app.use('/teas', teasRouter);
 app.use('/tanks', tankRouter);
 app.use('/notifications', notificationRouter);
-app.use('/tankData', tankDataRouter);
+app.use('/tankDatas', tankDataRouter);
 
 app.set('json replacer', (key, value) => {
   // undefined values are set to `null`
