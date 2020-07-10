@@ -1,7 +1,7 @@
 # Tank
 발효 탱크(tank)에 대한 정보를 생성, 조회, 수정, 삭제하는 API
 
-## Tea object
+## Tank object
 | name | type | description |
 | --- | --- | --- |
 | id | number | tank identifier |

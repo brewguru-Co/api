@@ -1,7 +1,7 @@
 # Notifications
 알림(notification)에 대한 정보를 생성, 조회, 수정, 삭제하는 API
 
-## notification object
+## Notification object
 | name | type | description |
 | --- | --- | --- |
 | id | number | notification identifier |
