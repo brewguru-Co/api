@@ -1,24 +1,27 @@
 const { sequelize } = require('../models');
 
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('notifications', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('notificationTargets', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-    to: {
+    name: {
       unique: true,
+      type: Sequelize.STRING,
+    },
+    email: {
+      type: Sequelize.STRING,
+    },
+    phone: {
       type: Sequelize.STRING,
     },
     on: {
       allowNull: false,
       defaultValue: 1,
       type: Sequelize.STRING,
-    },
-    sentAt: {
-      type: Sequelize.DATE,
     },
     createdAt: {
       allowNull: false,
@@ -31,5 +34,5 @@ module.exports = {
       type: Sequelize.DATE,
     },
   }),
-  down: (queryInterface) => queryInterface.dropTable('notifications'),
+  down: (queryInterface) => queryInterface.dropTable('notificationTargets'),
 };

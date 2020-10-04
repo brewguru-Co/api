@@ -101,10 +101,14 @@ function getFakeBatchData(start, end, id) {
 
 async function getData(req, res, next) {
   try {
-    const { batchId } = req.params;
-    const start = 1567296000;
+    const start = 1598918400;
     const end = 1601424000;
-    return res.send(getFakeBatchData(start, end, batchId));
+    return res.send({
+      1: getFakeBatchData(start, end, 1),
+      2: getFakeBatchData(start, end, 2),
+      3: getFakeBatchData(start, end, 3),
+      4: getFakeBatchData(start, end, 4),
+    });
   } catch (e) {
     return next(createError(400, e.message));
   }

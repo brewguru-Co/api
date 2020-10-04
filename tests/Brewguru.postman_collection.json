@@ -16,7 +16,7 @@
 							"script": {
 								"id": "29d208dd-65eb-4a22-abef-2081bfc6f8b3",
 								"exec": [
-									"pm.environment.set(\"api\", \"http://localhost:3000\");"
+									"pm.environment.set(\"api\", \"http://localhost:5000\");"
 								],
 								"type": "text/javascript"
 							}
@@ -1726,10 +1726,10 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "Notifications",
+			"name": "NotificationTargets",
 			"item": [
 				{
-					"name": "[Valid] Create notification (only required)",
+					"name": "[Valid] Create notificationTarget (only required)",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -1757,18 +1757,19 @@
 									"    type: \"object\",",
 									"    properties: {",
 									"        id: { type: \"number\" },",
-									"        to: { type: \"string\" },",
-									"        on: { type: \"boolean\"},",
-									"        sentAt: { type: [\"number\", \"null\"] },",
+									"        name: { type: \"string\" },",
+									"        email: { type: [\"string\", \"null\"] },",
+									"        phone: { type: [\"string\", \"null\"] },",
+									"        on: { type: \"boolean\"}",
 									"    },",
-									"    required: [\"id\", \"to\", \"on\", \"sentAt\"]",
+									"    required: [\"id\", \"name\", \"email\", \"phone\", \"on\"]",
 									"}",
 									"",
 									"pm.test('Schema is valid', function () {",
 									"    pm.expect(ajv.validate(schema, jsonData)).to.be.true;",
 									"});",
 									"",
-									"pm.environment.set(\"notificationId\", jsonData.id);"
+									"pm.environment.set(\"notificationTargetId\", jsonData.id);"
 								],
 								"type": "text/javascript"
 							}
@@ -1785,22 +1786,22 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"to\": \"01066470203\"\n}"
+							"raw": "{\n\t\"name\": \"test\",\n\t\"email\": \"test@gmail.com\"\n}"
 						},
 						"url": {
-							"raw": "{{api}}/notifications",
+							"raw": "{{api}}/notificationTargets",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
-								"notifications"
+								"notificationTargets"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "[Valid] Create notification (all)",
+					"name": "[Valid] Create notificationTarget (all)",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -1828,18 +1829,19 @@
 									"    type: \"object\",",
 									"    properties: {",
 									"        id: { type: \"number\" },",
-									"        to: { type: \"string\" },",
-									"        on: { type: \"boolean\"},",
-									"        sentAt: { type: [\"number\", \"null\"] },",
+									"        name: { type: \"string\" },",
+									"        email: { type: [\"string\", \"null\"] },",
+									"        phone: { type: [\"string\", \"null\"] },",
+									"        on: { type: \"boolean\"}",
 									"    },",
-									"    required: [\"id\", \"to\", \"on\", \"sentAt\"]",
+									"    required: [\"id\", \"name\", \"email\", \"phone\", \"on\"]",
 									"}",
 									"",
 									"pm.test('Schema is valid', function () {",
 									"    pm.expect(ajv.validate(schema, jsonData)).to.be.true;",
 									"});",
 									"",
-									"pm.environment.set(\"notificationId2\", jsonData.id);"
+									"pm.environment.set(\"notificationTargetId2\", jsonData.id);"
 								],
 								"type": "text/javascript"
 							}
@@ -1856,22 +1858,22 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"to\": \"cs@brewguru.com\",\n\t\"on\": false\n}"
+							"raw": "{\n\t\"name\": \"차민철\",\n\t\"email\": \"mccha0407@gmail.com\",\n\t\"phone\": \"01066470203\"\n}"
 						},
 						"url": {
-							"raw": "{{api}}/notifications",
+							"raw": "{{api}}/notificationTargets",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
-								"notifications"
+								"notificationTargets"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "[Invalid] Create notification without (to)",
+					"name": "[Invalid] Create notificationTarget without (name)",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -1895,7 +1897,7 @@
 									"const jsonData = pm.response.json();",
 									"",
 									"pm.test(\"error message\", () => {",
-									"    pm.expect(jsonData.error).to.eql(\"to is required\");",
+									"    pm.expect(jsonData.error).to.eql(\"\\\"name\\\" is required\");",
 									"})",
 									""
 								],
@@ -1917,19 +1919,77 @@
 							"raw": "{\n}"
 						},
 						"url": {
-							"raw": "{{api}}/notifications",
+							"raw": "{{api}}/notificationTargets",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
-								"notifications"
+								"notificationTargets"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "[Invalid] Create notification duplicated (to)",
+					"name": "[Invalid] Create notificationTarget without (email, phone)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "1012eefa-3a24-44ac-8d31-dc34a33dac51",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "ad1eb404-95db-4c04-95c4-a112146049d5",
+								"exec": [
+									"pm.test(\"response is 400 error\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"error message\", () => {",
+									"    pm.expect(jsonData.error).to.eql(\"\\\"value\\\" must contain at least one of [email, phone]\");",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"test2\"\n}"
+						},
+						"url": {
+							"raw": "{{api}}/notificationTargets",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"notificationTargets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Invalid] Create notificationTarget duplicated (name)",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -1953,7 +2013,7 @@
 									"const jsonData = pm.response.json();",
 									"",
 									"pm.test(\"error message\", () => {",
-									"    pm.expect(jsonData.error).to.eql(\"Bad request (01066470203 already exist)\");",
+									"    pm.expect(jsonData.error).to.eql(\"Bad request (test already exist)\");",
 									"})",
 									""
 								],
@@ -1972,22 +2032,22 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"to\": \"01066470203\"\n}"
+							"raw": "{\n\t\"name\": \"test\",\n\t\"phone\": \"01012341234\"\n}"
 						},
 						"url": {
-							"raw": "{{api}}/notifications",
+							"raw": "{{api}}/notificationTargets",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
-								"notifications"
+								"notificationTargets"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "[Valid] Update notification",
+					"name": "[Valid] Update notificationTarget (phone)",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -2015,11 +2075,12 @@
 									"    type: \"object\",",
 									"    properties: {",
 									"        id: { type: \"number\" },",
-									"        to: { type: \"string\" },",
-									"        on: { type: \"boolean\" },",
-									"        sentAt: { type: [\"number\", \"null\"] },",
+									"        name: { type: \"string\" },",
+									"        email: { type: [\"string\", \"null\"] },",
+									"        phone: { type: [\"string\", \"null\"] },",
+									"        on: { type: \"boolean\"}",
 									"    },",
-									"    required: [\"id\", \"to\", \"on\", \"sentAt\"]",
+									"    required: [\"id\", \"name\", \"email\", \"phone\", \"on\"]",
 									"}",
 									"",
 									"pm.test('Schema is valid', function () {",
@@ -2027,7 +2088,7 @@
 									"});",
 									"",
 									"pm.test('Data has updated correctly', () => {",
-									"    pm.expect(jsonData.on).to.eql(false);",
+									"    pm.expect(jsonData.phone).to.eql(\"01012341234\");",
 									"});"
 								],
 								"type": "text/javascript"
@@ -2045,21 +2106,21 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"on\": false\n}"
+							"raw": "{\n\t\"phone\": \"01012341234\"\n}"
 						},
 						"url": {
-							"raw": "{{api}}/notifications/:notificationId",
+							"raw": "{{api}}/notificationTargets/:id",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
-								"notifications",
-								":notificationId"
+								"notificationTargets",
+								":id"
 							],
 							"variable": [
 								{
-									"key": "notificationId",
-									"value": "{{notificationId}}"
+									"key": "id",
+									"value": "{{notificationTargetId}}"
 								}
 							]
 						}
@@ -2067,7 +2128,88 @@
 					"response": []
 				},
 				{
-					"name": "[Invalid] Update notification duplicated (to)",
+					"name": "[Valid] Update notificationTarget (name)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "29a9fa2f-df48-4cbb-81be-b11ec4beea8b",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "dc02bec5-cbb5-4543-bb9d-9cbde96a4fe5",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const Ajv = require('ajv');",
+									"const ajv = new Ajv({ logger: console });",
+									"const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"        id: { type: \"number\" },",
+									"        name: { type: \"string\" },",
+									"        email: { type: [\"string\", \"null\"] },",
+									"        phone: { type: [\"string\", \"null\"] },",
+									"        on: { type: \"boolean\"}",
+									"    },",
+									"    required: [\"id\", \"name\", \"email\", \"phone\", \"on\"]",
+									"}",
+									"",
+									"pm.test('Schema is valid', function () {",
+									"    pm.expect(ajv.validate(schema, jsonData)).to.be.true;",
+									"});",
+									"",
+									"pm.test('Data has updated correctly', () => {",
+									"    pm.expect(jsonData.name).to.eql(\"test2\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"test2\"\n}"
+						},
+						"url": {
+							"raw": "{{api}}/notificationTargets/:id",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"notificationTargets",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{notificationTargetId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Invalid] Update notificationTarget duplicated (name)",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -2091,7 +2233,7 @@
 									"const jsonData = pm.response.json();",
 									"",
 									"pm.test(\"error message\", () => {",
-									"    pm.expect(jsonData.error).to.eql(\"Bad request (01066470203 already exist)\");",
+									"    pm.expect(jsonData.error).to.eql(\"Bad request (차민철 already exist)\");",
 									"})"
 								],
 								"type": "text/javascript"
@@ -2109,21 +2251,21 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"to\": \"01066470203\"\n}"
+							"raw": "{\n\t\"name\": \"차민철\"\n}"
 						},
 						"url": {
-							"raw": "{{api}}/notifications/:notificationId",
+							"raw": "{{api}}/notificationTargets/:id",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
-								"notifications",
-								":notificationId"
+								"notificationTargets",
+								":id"
 							],
 							"variable": [
 								{
-									"key": "notificationId",
-									"value": "{{notificationId2}}"
+									"key": "id",
+									"value": "{{notificationTargetId}}"
 								}
 							]
 						}
@@ -2131,7 +2273,7 @@
 					"response": []
 				},
 				{
-					"name": "[Invalid] Update notification (wrong notificationId)",
+					"name": "[Invalid] Update notificationTarget (wrong id)",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -2155,7 +2297,7 @@
 									"const jsonData = pm.response.json();",
 									"",
 									"pm.test(\"error message\", () => {",
-									"    pm.expect(jsonData.error).to.eql(\"Bad request (notificationId doesn't exit)\");",
+									"    pm.expect(jsonData.error).to.eql(\"Bad request (id doesn't exit)\");",
 									"})"
 								],
 								"type": "text/javascript"
@@ -2173,21 +2315,21 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"to\": \"01012341234\"\n}"
+							"raw": "{\n\t\"name\": \"차민철\"\n}"
 						},
 						"url": {
-							"raw": "{{api}}/notifications/:notificationId",
+							"raw": "{{api}}/notificationTargets/:id",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
-								"notifications",
-								":notificationId"
+								"notificationTargets",
+								":id"
 							],
 							"variable": [
 								{
-									"key": "notificationId",
-									"value": "9999"
+									"key": "id",
+									"value": "99999"
 								}
 							]
 						}
@@ -2195,7 +2337,7 @@
 					"response": []
 				},
 				{
-					"name": "Get notifications",
+					"name": "Get notificationTargets",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -2223,11 +2365,12 @@
 									"    type: \"object\",",
 									"    properties: {",
 									"        id: { type: \"number\" },",
-									"        to: { type: \"string\" },",
-									"        on: { type: \"boolean\"},",
-									"        sentAt: { type: [\"number\", \"null\"] },",
+									"        name: { type: \"string\" },",
+									"        email: { type: [\"string\", \"null\"] },",
+									"        phone: { type: [\"string\", \"null\"] },",
+									"        on: { type: \"boolean\"}",
 									"    },",
-									"    required: [\"id\", \"to\", \"on\", \"sentAt\"]",
+									"    required: [\"id\", \"name\", \"email\", \"phone\", \"on\"]",
 									"}",
 									"",
 									"pm.test('Schema is valid', function () {",
@@ -2258,19 +2401,19 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{api}}/notifications",
+							"raw": "{{api}}/notificationTargets",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
-								"notifications"
+								"notificationTargets"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "[Valid] Delete notification",
+					"name": "[Valid] Delete notificationTarget 1",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -2292,8 +2435,8 @@
 									"});",
 									"",
 									"const jsonData = pm.response.json();",
-									"const notificationId = postman.getEnvironmentVariable(\"notificationId\");",
-									"pm.expect(jsonData.id).to.eql(notificationId);"
+									"const notificationTargetId = postman.getEnvironmentVariable(\"notificationTargetId\");",
+									"pm.expect(jsonData.id).to.eql(notificationTargetId);"
 								],
 								"type": "text/javascript"
 							}
@@ -2310,22 +2453,22 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"notificationId\": {{notificationId}}\n}"
+							"raw": "{\n\t\"id\": {{notificationTargetId}}\n}"
 						},
 						"url": {
-							"raw": "{{api}}/notifications",
+							"raw": "{{api}}/notificationTargets",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
-								"notifications"
+								"notificationTargets"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "[Valid] Delete notification (all)",
+					"name": "[Valid] Delete notificationTarget 2",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -2347,8 +2490,8 @@
 									"});",
 									"",
 									"const jsonData = pm.response.json();",
-									"const notificationId = postman.getEnvironmentVariable(\"notificationId2\");",
-									"pm.expect(jsonData.id).to.eql(notificationId);"
+									"const notificationTargetId2 = postman.getEnvironmentVariable(\"notificationTargetId2\");",
+									"pm.expect(jsonData.id).to.eql(notificationTargetId2);"
 								],
 								"type": "text/javascript"
 							}
@@ -2365,15 +2508,15 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"notificationId\": {{notificationId2}}\n}"
+							"raw": "{\n\t\"id\": {{notificationTargetId2}}\n}"
 						},
 						"url": {
-							"raw": "{{api}}/notifications",
+							"raw": "{{api}}/notificationTargets",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
-								"notifications"
+								"notificationTargets"
 							]
 						}
 					},

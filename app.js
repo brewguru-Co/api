@@ -7,7 +7,7 @@ const teasRouter = require('./routes/teas');
 const tankRouter = require('./routes/tanks');
 const batchRouter = require('./routes/batchs');
 const tankDataRouter = require('./routes/tankDatas');
-const notificationRouter = require('./routes/notifications');
+const notificationTargetRouter = require('./routes/notificationTargets');
 
 const error = require('./helpers/error');
 const logger = require('./helpers/logger');
@@ -16,10 +16,7 @@ const app = express();
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:3000'); // update to match the domain you will make the request from
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  );
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
 
@@ -30,7 +27,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/', indexRouter);
 app.use('/teas', teasRouter);
 app.use('/tanks', tankRouter);
-app.use('/notifications', notificationRouter);
+app.use('/notificationTargets', notificationTargetRouter);
 app.use('/tankDatas', tankDataRouter);
 app.use('/batchs', batchRouter);
 
