@@ -789,15 +789,15 @@
 									"        tempLowOp: { type: [\"number\", \"null\"] },",
 									"        phHighOp: { type: [\"number\", \"null\"] },",
 									"        phLowOp: { type: [\"number\", \"null\"] },",
-									"        doHighOp: { type: [\"number\", \"null\"] },",
-									"        doLowOp: { type: [\"number\", \"null\"] },",
+									"        doxHighOp: { type: [\"number\", \"null\"] },",
+									"        doxLowOp: { type: [\"number\", \"null\"] },",
 									"        brixHighOp: { type: [\"number\", \"null\"] },",
 									"        brixLowOp: { type: [\"number\", \"null\"] },",
 									"        createdAt: { type: \"number\" },",
 									"        updatedAt: { type: \"number\" },",
 									"    },",
-									"    required: [\"id\", \"name\", \"tempHighOp\", \"tempLowOp\", \"phHighOp\", \"phLowOp\", \"doHighOp\",",
-									"        \"doLowOp\", \"brixHighOp\", \"brixLowOp\", \"createdAt\", \"updatedAt\"]",
+									"    required: [\"id\", \"name\", \"tempHighOp\", \"tempLowOp\", \"phHighOp\", \"phLowOp\", \"doxHighOp\",",
+									"        \"doxLowOp\", \"brixHighOp\", \"brixLowOp\", \"createdAt\", \"updatedAt\"]",
 									"}",
 									"",
 									"pm.test('Schema is valid', function () {",
@@ -821,7 +821,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"kombucha\",\n\t\"tempHighOp\": 25,\n\t\"tempLowOp\": 23,\n\t\"phHighOp\": 3.5,\n\t\"phLowOp\": 3,\n\t\"doHighOp\": 80,\n\t\"doLowOp\": 70,\n\t\"brixHighOp\": 80,\n\t\"brixLowOp\": 70\n}"
+							"raw": "{\n\t\"name\": \"kombucha\",\n\t\"tempHighOp\": 25,\n\t\"tempLowOp\": 23,\n\t\"phHighOp\": 3.5,\n\t\"phLowOp\": 3,\n\t\"doxHighOp\": 80,\n\t\"doxLowOp\": 70,\n\t\"brixHighOp\": 80,\n\t\"brixLowOp\": 70\n}"
 						},
 						"url": {
 							"raw": "{{api}}/teas",
@@ -866,19 +866,19 @@
 									"        id: { type: \"number\" },",
 									"        name: { type: \"string\" },",
 									"        teaId: { type: \"number\" },",
+									"        teaName: { type: \"string\" },",
 									"        tempHigh: { type: [\"number\", \"null\"] },",
 									"        tempLow: { type: [\"number\", \"null\"] },",
 									"        phHigh: { type: [\"number\", \"null\"] },",
 									"        phLow: { type: [\"number\", \"null\"] },",
-									"        doHigh: { type: [\"number\", \"null\"] },",
-									"        doLow: { type: [\"number\", \"null\"] },",
+									"        doxHigh: { type: [\"number\", \"null\"] },",
+									"        doxLow: { type: [\"number\", \"null\"] },",
 									"        brixHigh: { type: [\"number\", \"null\"] },",
 									"        brixLow: { type: [\"number\", \"null\"] },",
-									"        startedAt: { type: \"number\" },",
 									"        createdAt: { type: \"number\" },",
 									"        updatedAt: { type: \"number\" },",
 									"    },",
-									"    required: [\"id\", \"name\", \"teaId\", \"tempHigh\", \"tempLow\", \"phHigh\", \"phLow\", \"doHigh\", \"doLow\", \"brixHigh\", \"brixLow\", \"startedAt\", \"createdAt\", \"updatedAt\"]",
+									"    required: [\"id\", \"name\", \"teaId\", \"tempHigh\", \"tempLow\", \"phHigh\", \"phLow\", \"doxHigh\", \"doxLow\", \"brixHigh\", \"brixLow\", \"createdAt\", \"updatedAt\"]",
 									"}",
 									"",
 									"pm.test('Schema is valid', function () {",
@@ -947,19 +947,19 @@
 									"        id: { type: \"number\" },",
 									"        name: { type: \"string\" },",
 									"        teaId: { type: \"number\" },",
+									"        teaName: { type: \"string\" },",
 									"        tempHigh: { type: [\"number\", \"null\"] },",
 									"        tempLow: { type: [\"number\", \"null\"] },",
 									"        phHigh: { type: [\"number\", \"null\"] },",
 									"        phLow: { type: [\"number\", \"null\"] },",
-									"        doHigh: { type: [\"number\", \"null\"] },",
-									"        doLow: { type: [\"number\", \"null\"] },",
+									"        doxHigh: { type: [\"number\", \"null\"] },",
+									"        doxLow: { type: [\"number\", \"null\"] },",
 									"        brixHigh: { type: [\"number\", \"null\"] },",
 									"        brixLow: { type: [\"number\", \"null\"] },",
-									"        startedAt: { type: \"number\" },",
 									"        createdAt: { type: \"number\" },",
 									"        updatedAt: { type: \"number\" },",
 									"    },",
-									"    required: [\"id\", \"name\", \"teaId\", \"tempHigh\", \"tempLow\", \"phHigh\", \"phLow\", \"doHigh\", \"doLow\", \"brixHigh\", \"brixLow\", \"startedAt\", \"createdAt\", \"updatedAt\"]",
+									"    required: [\"id\", \"name\", \"teaId\", \"tempHigh\", \"tempLow\", \"phHigh\", \"phLow\", \"doxHigh\", \"doxLow\", \"brixHigh\", \"brixLow\", \"createdAt\", \"updatedAt\"]",
 									"}",
 									"",
 									"pm.test('Schema is valid', function () {",
@@ -983,7 +983,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"tank2\",\n\t\"teaId\": {{teaId}},\n\t\"tempHigh\": 25,\n\t\"tempLow\": 23,\n\t\"phHigh\": 3.5,\n\t\"phLow\": 3,\n\t\"doHigh\": 80,\n\t\"doLow\": 70,\n\t\"brixHigh\": 80,\n\t\"brixLow\": 70\n}"
+							"raw": "{\n\t\"name\": \"tank2\",\n\t\"teaId\": {{teaId}},\n\t\"tempHigh\": 25,\n\t\"tempLow\": 23,\n\t\"phHigh\": 3.5,\n\t\"phLow\": 3,\n\t\"doxHigh\": 80,\n\t\"doxLow\": 70,\n\t\"brixHigh\": 80,\n\t\"brixLow\": 70\n}"
 						},
 						"url": {
 							"raw": "{{api}}/tanks",
@@ -1260,19 +1260,19 @@
 									"        id: { type: \"number\" },",
 									"        name: { type: \"string\" },",
 									"        teaId: { type: \"number\" },",
+									"        teaName: { type: \"string\" },",
 									"        tempHigh: { type: [\"number\", \"null\"] },",
 									"        tempLow: { type: [\"number\", \"null\"] },",
 									"        phHigh: { type: [\"number\", \"null\"] },",
 									"        phLow: { type: [\"number\", \"null\"] },",
-									"        doHigh: { type: [\"number\", \"null\"] },",
-									"        doLow: { type: [\"number\", \"null\"] },",
+									"        doxHigh: { type: [\"number\", \"null\"] },",
+									"        doxLow: { type: [\"number\", \"null\"] },",
 									"        brixHigh: { type: [\"number\", \"null\"] },",
 									"        brixLow: { type: [\"number\", \"null\"] },",
-									"        startedAt: { type: \"number\" },",
 									"        createdAt: { type: \"number\" },",
 									"        updatedAt: { type: \"number\" },",
 									"    },",
-									"    required: [\"id\", \"name\", \"teaId\", \"tempHigh\", \"tempLow\", \"phHigh\", \"phLow\", \"doHigh\", \"doLow\", \"brixHigh\", \"brixLow\", \"startedAt\", \"createdAt\", \"updatedAt\"]",
+									"    required: [\"id\", \"name\", \"teaId\", \"tempHigh\", \"tempLow\", \"phHigh\", \"phLow\", \"doxHigh\", \"doxLow\", \"brixHigh\", \"brixLow\", \"createdAt\", \"updatedAt\"]",
 									"}",
 									"",
 									"pm.test('Schema is valid', function () {",
@@ -1304,17 +1304,17 @@
 							"raw": "{\n\t\"tempHigh\": 25,\n\t\"tempLow\": 23,\n\t\"phHigh\": 3.5,\n\t\"phLow\": 3\n}"
 						},
 						"url": {
-							"raw": "{{api}}/tanks/:tankId",
+							"raw": "{{api}}/tanks/:id",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"tanks",
-								":tankId"
+								":id"
 							],
 							"variable": [
 								{
-									"key": "tankId",
+									"key": "id",
 									"value": "{{tankId}}"
 								}
 							]
@@ -1368,17 +1368,17 @@
 							"raw": "{\n\t\"name\": \"tank1\"\n}"
 						},
 						"url": {
-							"raw": "{{api}}/tanks/:tankId",
+							"raw": "{{api}}/tanks/:id",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"tanks",
-								":tankId"
+								":id"
 							],
 							"variable": [
 								{
-									"key": "tankId",
+									"key": "id",
 									"value": "{{tankId2}}"
 								}
 							]
@@ -1481,19 +1481,19 @@
 									"        id: { type: \"number\" },",
 									"        name: { type: \"string\" },",
 									"        teaId: { type: \"number\" },",
+									"        teaName: { type: \"string\" },",
 									"        tempHigh: { type: [\"number\", \"null\"] },",
 									"        tempLow: { type: [\"number\", \"null\"] },",
 									"        phHigh: { type: [\"number\", \"null\"] },",
 									"        phLow: { type: [\"number\", \"null\"] },",
-									"        doHigh: { type: [\"number\", \"null\"] },",
-									"        doLow: { type: [\"number\", \"null\"] },",
+									"        doxHigh: { type: [\"number\", \"null\"] },",
+									"        doxLow: { type: [\"number\", \"null\"] },",
 									"        brixHigh: { type: [\"number\", \"null\"] },",
 									"        brixLow: { type: [\"number\", \"null\"] },",
-									"        startedAt: { type: \"number\" },",
 									"        createdAt: { type: \"number\" },",
 									"        updatedAt: { type: \"number\" },",
 									"    },",
-									"    required: [\"id\", \"name\", \"teaId\", \"tempHigh\", \"tempLow\", \"phHigh\", \"phLow\", \"doHigh\", \"doLow\", \"brixHigh\", \"brixLow\", \"startedAt\", \"createdAt\", \"updatedAt\"]",
+									"    required: [\"id\", \"name\", \"teaId\", \"teaName\", \"tempHigh\", \"tempLow\", \"phHigh\", \"phLow\", \"doxHigh\", \"doxLow\", \"brixHigh\", \"brixLow\", \"createdAt\", \"updatedAt\"]",
 									"}",
 									"",
 									"pm.test('Schema is valid', function () {",
@@ -1576,7 +1576,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"tankId\": {{tankId}}\n}"
+							"raw": "{\n\t\"id\": {{tankId}}\n}"
 						},
 						"url": {
 							"raw": "{{api}}/tanks",
@@ -1631,7 +1631,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"tankId\": {{tankId2}}\n}"
+							"raw": "{\n\t\"id\": {{tankId2}}\n}"
 						},
 						"url": {
 							"raw": "{{api}}/tanks",
@@ -1686,7 +1686,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"teaId\": {{teaId}}\n}"
+							"raw": "{\n\t\"id\": {{teaId}}\n}"
 						},
 						"url": {
 							"raw": "{{api}}/teas",

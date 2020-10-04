@@ -6,16 +6,16 @@
 | --- | --- | --- |
 | id | number | tank identifier |
 | name | string | tank name |
-| tea | string | tea name |
+| teaId | string | tea identifier |
+| teaName | string | tea name |
 | tempHigh | number | max limit value of temperature |
 | tempLow | number | min limit value of temperature |
 | phHigh | number | max limit value of PH |
 | phLow | number | min limit value of PH |
-| doHigh | number | max limit value of DO |
-| doLow | number | min limit value of DO |
+| doxHigh | number | max limit value of DO |
+| doxLow | number | min limit value of DO |
 | brixHigh | number | max limit value of Brix |
 | brixLow | number | min limit value of Brix |
-| startedAt | timestamp | fermentation start time |
 
 ## Create a Tank
 Create a tank
@@ -27,16 +27,15 @@ Create a tank
 | name | type | description |
 | --- | --- | --- |
 | name | string | (**required**) tank name |
-| tea | string | (**required**) tea name that already has been registered |
+| teaId | number | (**required**) tea identifier |
 | tempHigh | number | max limit value of temperature |
 | tempLow | number | min limit value of temperature |
 | phHigh | number | max limit value of PH |
 | phLow | number | min limit value of PH |
-| doHigh | number | max limit value of DO |
-| doLow | number | min limit value of DO |
+| doxHigh | number | max limit value of DO |
+| doxLow | number | min limit value of DO |
 | brixHigh | number | max limit value of Brix |
 | brixLow | number | min limit value of Brix |
-| startedAt | timestamp | fermentation start time (default current time) |
 
 ### Request Example
 ```sh
@@ -45,13 +44,13 @@ curl -X POST
     -H "Content-Type: application/json"
     -d '{
       "name": "1"
-      "tea": "kombucha",
+      "teaId": 1,
       "tempHigh": 30,
       "tempLow": 29.5,
       "phHigh": 3.5,
       "phLow": 3,
-      "doHigh": 80,
-      "doLow": 78,
+      "doxHigh": 80,
+      "doxLow": 78,
     }'
      "http://{end-point}/tanks"
 ```
@@ -64,16 +63,16 @@ Created tank object on success, or error on failure.
 {
   "id": 1,
   "name": "1",
-  "tea": "kombucha",
+  "teaId": 1,
+  "teaName": "kombucha",
   "tempHigh": 30,
   "tempLow": 29.5,
   "phHigh": 3.5,
   "phLow": 3,
-  "doHigh": 80,
-  "doLow": 78,
+  "doxHigh": 80,
+  "doxLow": 78,
   "brixHigh": null,
   "brixLow": null,
-  "startedAt": 1593932595
 }
 ```
 
@@ -97,16 +96,16 @@ Retrieved result list of tanks on success, or error on failure.
 [{
   "id": 1,
   "name": "1",
-  "tea": "kombucha",
+  "teaId": 1,
+  "teaName": "kombucha",
   "tempHigh": 30,
   "tempLow": 29.5,
   "phHigh": 3.5,
   "phLow": 3,
-  "doHigh": 80,
-  "doLow": 78,
+  "doxHigh": 80,
+  "doxLow": 78,
   "brixHigh": null,
   "brixLow": null,
-  "startedAt": 1593932595
 }]
 ```
 
@@ -125,16 +124,15 @@ Update a tank
 | name | type | description |
 | --- | --- | --- |
 | name | string | tank name |
-| tea | string | tea name |
+| teaId | number | tea identifier |
 | tempHigh | number | max limit value of temperature |
 | tempLow | number | min limit value of temperature |
 | phHigh | number | max limit value of PH |
 | phLow | number | min limit value of PH |
-| doHigh | number | max limit value of DO |
-| doLow | number | min limit value of DO |
+| doxHigh | number | max limit value of DO |
+| doxLow | number | min limit value of DO |
 | brixHigh | number | max limit value of Brix |
 | brixLow | number | min limit value of Brix |
-| startedAt | timestamp | fermentation start time (default current time) |
 
 ### Request Example
 ```sh
@@ -142,7 +140,7 @@ curl -X PATCH
     -H "accept-version: 2.0.0"
     -H "Content-Type: application/json"
     -d '{
-      "name": "114234"
+      "name": "test"
     }'
      "http://{end-point}/tanks/1"
 ```
@@ -154,14 +152,15 @@ Updated tank object on success, or error on failure.
 ``` json
 {
   "id": 1,
-  "name": "114234",
-  "tea": "kombucha",
+  "name": "test",
+  "teaId": 1,
+  "teaName": "kombucha",
   "tempHigh": 30,
   "tempLow": 29.5,
   "phHigh": 3.5,
   "phLow": 3,
-  "doHigh": 80,
-  "doLow": 78,
+  "doxHigh": 80,
+  "doxLow": 78,
   "brixHigh": null,
   "brixLow": null,
   "startedAt": 1593932595

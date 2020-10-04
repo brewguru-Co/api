@@ -35,20 +35,17 @@ module.exports = {
     phLow: {
       type: Sequelize.FLOAT,
     },
-    doHigh: {
-      type: Sequelize.INTEGER,
+    doxHigh: {
+      type: Sequelize.FLOAT,
     },
-    doLow: {
-      type: Sequelize.INTEGER,
+    doxLow: {
+      type: Sequelize.FLOAT,
     },
     brixHigh: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.FLOAT,
     },
     brixLow: {
-      type: Sequelize.INTEGER,
-    },
-    startedAt: {
-      type: Sequelize.DATE,
+      type: Sequelize.FLOAT,
     },
     createdAt: {
       allowNull: false,

@@ -26,16 +26,16 @@ module.exports = {
       type: Sequelize.FLOAT,
     },
     doxHighOp: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.FLOAT,
     },
     doxLowOp: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.FLOAT,
     },
     brixHighOp: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.FLOAT,
     },
     brixLowOp: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.FLOAT,
     },
     createdAt: {
       allowNull: false,
