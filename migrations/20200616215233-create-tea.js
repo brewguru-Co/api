@@ -25,10 +25,10 @@ module.exports = {
     phLowOp: {
       type: Sequelize.FLOAT,
     },
-    doHighOp: {
+    doxHighOp: {
       type: Sequelize.INTEGER,
     },
-    doLowOp: {
+    doxLowOp: {
       type: Sequelize.INTEGER,
     },
     brixHighOp: {

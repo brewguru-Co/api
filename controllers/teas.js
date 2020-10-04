@@ -3,24 +3,38 @@ const Joi = require('@hapi/joi');
 const moment = require('moment');
 const models = require('../models');
 
-const teaIdSchema = Joi.number().required().error(() => new Error('tea id is required'));
-const teaNameSchema = Joi.string().required().error(() => new Error('tea name is required'));
+const teaIdSchema = Joi.number()
+  .required()
+  .error(() => new Error('id is required'));
+const teaNameSchema = Joi.string()
+  .required()
+  .error(() => new Error('tea name is required'));
 const teaSchema = Joi.object({
   name: Joi.string(),
   tempHighOp: Joi.number(),
   tempLowOp: Joi.number(),
   phHighOp: Joi.number(),
   phLowOp: Joi.number(),
-  doHighOp: Joi.number(),
-  doLowOp: Joi.number(),
+  doxHighOp: Joi.number(),
+  doxLowOp: Joi.number(),
   brixHighOp: Joi.number(),
   brixLowOp: Joi.number(),
 });
 
 function toTeaObject(rawTea) {
   const {
-    id, name, tempHighOp, tempLowOp, phHighOp, phLowOp, doHighOp, doLowOp, brixHighOp, brixLowOp,
-    createdAt, updatedAt,
+    id,
+    name,
+    tempHighOp,
+    tempLowOp,
+    phHighOp,
+    phLowOp,
+    doxHighOp,
+    doxLowOp,
+    brixHighOp,
+    brixLowOp,
+    createdAt,
+    updatedAt,
   } = rawTea;
   return {
     id,
@@ -29,8 +43,8 @@ function toTeaObject(rawTea) {
     tempLowOp,
     phHighOp,
     phLowOp,
-    doHighOp,
-    doLowOp,
+    doxHighOp,
+    doxLowOp,
     brixHighOp,
     brixLowOp,
     createdAt: moment(createdAt).unix(),
@@ -56,11 +70,11 @@ async function create(req, res, next) {
 async function update(req, res, next) {
   try {
     const { body, params } = req;
+    await teaIdSchema.validateAsync(params.id);
     const value = await teaSchema.validateAsync(body);
-    await teaIdSchema.validateAsync(params.teaId);
 
     const options = {
-      where: { id: params.teaId },
+      where: { id: params.id },
       raw: true,
     };
 
@@ -70,7 +84,7 @@ async function update(req, res, next) {
         if (updated) {
           models.tea.findOne(options).then((tea) => res.send(toTeaObject(tea)));
         } else {
-          next(createError(400, "Bad request (teaId doesn't exit)"));
+          next(createError(400, "Bad request (id doesn't exit)"));
         }
       })
       .catch((err) => next(err));
@@ -89,10 +103,10 @@ function get(req, res, next) {
 async function remove(req, res, next) {
   try {
     const { body } = req;
-    const value = await teaIdSchema.validateAsync(body.teaId);
+    const id = await teaIdSchema.validateAsync(body.id);
 
     const options = {
-      where: { id: value },
+      where: { id },
       raw: true,
     };
 
@@ -100,9 +114,9 @@ async function remove(req, res, next) {
       .destroy(options)
       .then((deleted) => {
         if (deleted) {
-          res.send({ id: value });
+          res.send({ id });
         } else {
-          next(createError(400, "Bad request (teaId doesn't exit)"));
+          next(createError(400, "Bad request (id doesn't exit)"));
         }
       })
       .catch((err) => next(err));
