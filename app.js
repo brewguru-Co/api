@@ -4,6 +4,7 @@ const morgan = require('morgan');
 
 const indexRouter = require('./routes/index');
 const teasRouter = require('./routes/teas');
+const teaOffsetsRouter = require('./routes/teaOffsets');
 const tankRouter = require('./routes/tanks');
 const batchRouter = require('./routes/batchs');
 const batchDataRouter = require('./routes/batchDatas');
@@ -27,8 +28,9 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/', indexRouter);
 app.use('/teas', teasRouter);
+app.use('/tea-offsets', teaOffsetsRouter);
 app.use('/tanks', tankRouter);
-app.use('/notificationTargets', notificationTargetRouter);
+app.use('/notification-targets', notificationTargetRouter);
 app.use('/tankDatas', tankDataRouter);
 app.use('/batchs', batchRouter);
 app.use('/batchDatas', batchDataRouter);

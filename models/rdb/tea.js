@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
   tea.associate = (models) => {
     // associations can be defined here
     tea.hasMany(models.tank);
+    tea.hasMany(models.teaOffset);
     tea.hasMany(models.batch);
   };
   return tea;
