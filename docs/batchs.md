@@ -166,12 +166,22 @@ Updated batch object on success, or error on failure.
 Delete a batch
 
 ### Route
-`DELETE /batchs/:batchId`
+`DELETE /batchs`
+
+### Body Parameters
+| name | type | description |
+| --- | --- | --- |
+| id | number | batch identifier |
 
 ### Request Example
 ```sh
 curl -X DELETE
-     "http://{end-point}/batchs/1"
+    -H "accept-version: 2.0.0"
+    -H "Content-Type: application/json"
+    -d '{
+        "id": 1
+      }'
+     "http://{end-point}/batchs"
 ```
 
 ### Response

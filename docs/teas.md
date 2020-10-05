@@ -182,14 +182,23 @@ Updated tea object on success, or error on failure.
 Delete a tea
 
 ### Route
+`DELETE /teas`
 
-`DELETE /teas/:teaId`
+### Body Parameters
+| name | type | description |
+| --- | --- | --- |
+| id | number | tea identifier |
 
 ### Request Example
 
 ```sh
 curl -X DELETE
-     "http://{end-point}/teas/1"
+    -H "accept-version: 2.0.0"
+    -H "Content-Type: application/json"
+    -d '{
+        "id": 1
+      }'
+     "http://{end-point}/teas"
 ```
 
 ### Response

@@ -137,12 +137,22 @@ Updated teaOffset object on success, or error on failure.
 Delete a teaOffset
 
 ### Route
-`DELETE /teaOffsets/:teaOffsetId`
+`DELETE /teaOffsets`
+
+### Body Parameters
+| name | type | description |
+| --- | --- | --- |
+| id | number | teaOffset identifier |
 
 ### Request Example
 ```sh
 curl -X DELETE
-     "http://{end-point}/teaOffsets/1"
+    -H "accept-version: 2.0.0"
+    -H "Content-Type: application/json"
+    -d '{
+        "id": 1
+      }'
+     "http://{end-point}/teaOffsets"
 ```
 
 ### Response

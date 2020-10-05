@@ -9,6 +9,7 @@ const tankRouter = require('./routes/tanks');
 const batchRouter = require('./routes/batchs');
 const batchDataRouter = require('./routes/batchDatas');
 const tankDataRouter = require('./routes/tankDatas');
+const notificationRouter = require('./routes/notifications');
 const notificationTargetRouter = require('./routes/notificationTargets');
 
 const error = require('./helpers/error');
@@ -30,6 +31,7 @@ app.use('/', indexRouter);
 app.use('/teas', teasRouter);
 app.use('/tea-offsets', teaOffsetsRouter);
 app.use('/tanks', tankRouter);
+app.use('/notifications', notificationRouter);
 app.use('/notification-targets', notificationTargetRouter);
 app.use('/tankDatas', tankDataRouter);
 app.use('/batchs', batchRouter);

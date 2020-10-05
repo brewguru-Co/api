@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | id | number | tank identifier |
 | name | string | tank name |
-| teaId | string | tea identifier |
+| teaId | number | tea identifier |
 | teaName | string | tea name |
 | tempHigh | number | max limit value of temperature |
 | tempLow | number | min limit value of temperature |
@@ -170,12 +170,22 @@ Updated tank object on success, or error on failure.
 Delete a tank
 
 ### Route
-`DELETE /tanks/:tankId`
+`DELETE /tanks`
+
+### Body Parameters
+| name | type | description |
+| --- | --- | --- |
+| id | number | tank identifier |
 
 ### Request Example
 ```sh
 curl -X DELETE
-     "http://{end-point}/tanks/1"
+    -H "accept-version: 2.0.0"
+    -H "Content-Type: application/json"
+    -d '{
+        "id": 1
+      }'
+     "http://{end-point}/tanks"
 ```
 
 ### Response

@@ -149,12 +149,22 @@ Delete a notificationTarget
 
 ### Route
 
-`DELETE /notificationTargets/:notificationTargetId`
+`DELETE /notificationTargets`
+
+### Body Parameters
+| name | type | description |
+| --- | --- | --- |
+| id | number | notification target identifier |
 
 ### Request Example
 
 ```sh
 curl -X DELETE
+    -H "accept-version: 2.0.0"
+    -H "Content-Type: application/json"
+    -d '{
+        "id": 1
+      }'
      "http://{end-point}/notificationTargets/1"
 ```
 

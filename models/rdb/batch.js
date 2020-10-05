@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   batch.associate = (models) => {
     // associations can be defined here
+    batch.hasMany(models.notification);
     models.batch.belongsTo(models.tea, {
       onUpdate: 'CASCADE',
       foreignKey: {

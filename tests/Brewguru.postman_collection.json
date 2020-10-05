@@ -3157,7 +3157,7 @@
 									"    pm.expect(ajv.validate(schema, jsonData)).to.be.true;",
 									"});",
 									"",
-									"pm.test('Data has updated correctly', () => {",
+									"pm.test('Data has been updated correctly', () => {",
 									"    pm.expect(jsonData.finishedAt).to.eql(1601857243)",
 									"    pm.expect(jsonData.ph).to.eql(2.51)",
 									"    pm.expect(jsonData.dox).to.eql(70)",
@@ -3897,6 +3897,715 @@
 							"listen": "test",
 							"script": {
 								"id": "797963c9-9f2b-43c9-895c-4092a4738548",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const teaId = postman.getEnvironmentVariable(\"teaId\");",
+									"pm.expect(jsonData.id).to.eql(teaId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": {{teaId}}\n}"
+						},
+						"url": {
+							"raw": "{{api}}/teas",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"teas"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "[Valid] Create tea (all)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8572c4c2-4e03-4dc9-a773-5f94c0523665",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "a9216020-1307-4dd9-9edb-612d933706ee",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const Ajv = require('ajv');",
+									"const ajv = new Ajv({ logger: console });",
+									"const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"        id: { type: \"number\" },",
+									"        name: { type: \"string\" },",
+									"        tempHighOp: { type: [\"number\", \"null\"] },",
+									"        tempLowOp: { type: [\"number\", \"null\"] },",
+									"        phHighOp: { type: [\"number\", \"null\"] },",
+									"        phLowOp: { type: [\"number\", \"null\"] },",
+									"        doxHighOp: { type: [\"number\", \"null\"] },",
+									"        doxLowOp: { type: [\"number\", \"null\"] },",
+									"        brixHighOp: { type: [\"number\", \"null\"] },",
+									"        brixLowOp: { type: [\"number\", \"null\"] },",
+									"        createdAt: { type: \"number\" },",
+									"        updatedAt: { type: \"number\" },",
+									"    },",
+									"    required: [\"id\", \"name\", \"tempHighOp\", \"tempLowOp\", \"phHighOp\", \"phLowOp\", \"doxHighOp\",",
+									"        \"doxLowOp\", \"brixHighOp\", \"brixLowOp\", \"createdAt\", \"updatedAt\"]",
+									"}",
+									"",
+									"pm.test('Schema is valid', function () {",
+									"    pm.expect(ajv.validate(schema, jsonData)).to.be.true;",
+									"});",
+									"",
+									"pm.environment.set(\"teaId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"kombucha\",\n\t\"tempHighOp\": 25,\n\t\"tempLowOp\": 23,\n\t\"phHighOp\": 3.5,\n\t\"phLowOp\": 3,\n\t\"doxHighOp\": 80,\n\t\"doxLowOp\": 70,\n\t\"brixHighOp\": 80,\n\t\"brixLowOp\": 70\n}"
+						},
+						"url": {
+							"raw": "{{api}}/teas",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"teas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Valid] Create tank (all)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c85e4e42-c087-48ce-b6f6-518185a0fa43",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "39bfec5e-5e60-4dd2-8632-d4962eb40477",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const Ajv = require('ajv');",
+									"const ajv = new Ajv({ logger: console });",
+									"const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"        id: { type: \"number\" },",
+									"        name: { type: \"string\" },",
+									"        teaId: { type: \"number\" },",
+									"        teaName: { type: \"string\" },",
+									"        tempHigh: { type: [\"number\", \"null\"] },",
+									"        tempLow: { type: [\"number\", \"null\"] },",
+									"        phHigh: { type: [\"number\", \"null\"] },",
+									"        phLow: { type: [\"number\", \"null\"] },",
+									"        doxHigh: { type: [\"number\", \"null\"] },",
+									"        doxLow: { type: [\"number\", \"null\"] },",
+									"        brixHigh: { type: [\"number\", \"null\"] },",
+									"        brixLow: { type: [\"number\", \"null\"] },",
+									"        createdAt: { type: \"number\" },",
+									"        updatedAt: { type: \"number\" },",
+									"    },",
+									"    required: [\"id\", \"name\", \"teaId\", \"tempHigh\", \"tempLow\", \"phHigh\", \"phLow\", \"doxHigh\", \"doxLow\", \"brixHigh\", \"brixLow\", \"createdAt\", \"updatedAt\"]",
+									"}",
+									"",
+									"pm.test('Schema is valid', function () {",
+									"    pm.expect(ajv.validate(schema, jsonData)).to.be.true;",
+									"});",
+									"",
+									"pm.environment.set(\"tankId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"tank2\",\n\t\"teaId\": {{teaId}},\n\t\"tempHigh\": 25,\n\t\"tempLow\": 23,\n\t\"phHigh\": 3.5,\n\t\"phLow\": 3,\n\t\"doxHigh\": 80,\n\t\"doxLow\": 70,\n\t\"brixHigh\": 80,\n\t\"brixLow\": 70\n}"
+						},
+						"url": {
+							"raw": "{{api}}/tanks",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"tanks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Valid] Create batch",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "43affb27-764b-4c51-93cc-785467591080",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const Ajv = require('ajv');",
+									"const ajv = new Ajv({ logger: console });",
+									"const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"        id: { type: \"number\" },",
+									"        teaId: { type: \"number\" },",
+									"        tankId: { type: \"number\" },",
+									"        teaName: { type: \"string\" },",
+									"        tankName: { type: \"string\" },",
+									"        temp: { type: [\"number\", \"null\"] },",
+									"        ph: { type: [\"number\", \"null\"] },",
+									"        dox: { type: [\"number\", \"null\"] },",
+									"        brix: { type: [\"number\", \"null\"] },",
+									"        hasError: { type: \"boolean\" },",
+									"        startedAt: { type: \"number\" },",
+									"        finishedAt: { type: [\"number\", \"null\"] },",
+									"        createdAt: { type: \"number\" },",
+									"        updatedAt: { type: \"number\" },",
+									"    },",
+									"    required: [\"id\", \"teaId\", \"tankId\", \"teaName\", \"tankName\", \"temp\", \"ph\", \"dox\", \"brix\", \"hasError\", \"startedAt\", \"finishedAt\", \"createdAt\", \"updatedAt\"]",
+									"}",
+									"",
+									"pm.test('Schema is valid', function () {",
+									"    pm.expect(ajv.validate(schema, jsonData)).to.be.true;",
+									"});",
+									"",
+									"pm.environment.set(\"batchId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"teaId\": {{teaId}},\n    \"tankId\": {{tankId}},\n\t\"startedAt\": 1601821982000\n}"
+						},
+						"url": {
+							"raw": "{{api}}/batchs",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"batchs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Valid] Create notification",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1a55bc4d-92d2-4f3e-800a-b512079d9a64",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const Ajv = require('ajv');",
+									"const ajv = new Ajv({ logger: console });",
+									"const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"        id: { type: \"number\" },",
+									"        batchId: { type: \"number\" },",
+									"        max: { type: \"number\" },",
+									"        min: { type: \"number\" },",
+									"        value: { type: \"number\" },",
+									"        action: { type: [\"string\", \"null\"] },",
+									"        createdAt: { type: \"number\" },",
+									"        updatedAt: { type: \"number\" },",
+									"    },",
+									"    required: [\"id\", \"batchId\", \"max\", \"min\", \"value\", \"action\", \"createdAt\", \"updatedAt\"]",
+									"}",
+									"",
+									"pm.test('Schema is valid', function () {",
+									"    pm.expect(ajv.validate(schema, jsonData)).to.be.true;",
+									"});",
+									"",
+									"pm.environment.set(\"notificationId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"batchId\": {{batchId}},\n\t\"code\": \"PhHighLimitOver\",\n\t\"max\": 3.5,\n    \"min\": 2.5,\n    \"value\": 3.6\n}"
+						},
+						"url": {
+							"raw": "{{api}}/notifications",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Invalid] Create notification (wrong batchId)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "324bccb2-f3e0-46f6-9825-d05f3ab55950",
+								"exec": [
+									"pm.test(\"response is 400 error\", () => {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"error message\", () => {",
+									"    pm.expect(jsonData.error).to.eql(\"Bad request (batchId doesn't exist)\");",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"batchId\": 999,\n\t\"code\": \"PhHighLimitOver\",\n\t\"max\": 3.5,\n    \"min\": 2.5,\n    \"value\": 3.6\n}"
+						},
+						"url": {
+							"raw": "{{api}}/notifications",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Valid] Update notification",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "006d5641-6155-493d-a02e-f8e7aa0448ce",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const Ajv = require('ajv');",
+									"const ajv = new Ajv({ logger: console });",
+									"const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"        id: { type: \"number\" },",
+									"        batchId: { type: \"number\" },",
+									"        max: { type: \"number\" },",
+									"        min: { type: \"number\" },",
+									"        value: { type: \"number\" },",
+									"        action: { type: [\"string\", \"null\"] },",
+									"        createdAt: { type: \"number\" },",
+									"        updatedAt: { type: \"number\" },",
+									"    },",
+									"    required: [\"id\", \"batchId\", \"max\", \"min\", \"value\", \"action\", \"createdAt\", \"updatedAt\"]",
+									"}",
+									"",
+									"pm.test('Schema is valid', function () {",
+									"    pm.expect(ajv.validate(schema, jsonData)).to.be.true;",
+									"});",
+									"",
+									"pm.test('Data has been updated correctly', () => {",
+									"    pm.expect(jsonData.action).to.eql(\"ph 조절을 위해 설탕 추가\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"action\": \"ph 조절을 위해 설탕 추가\"\n}"
+						},
+						"url": {
+							"raw": "{{api}}/notifications/:id",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"notifications",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{notificationId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get notification",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "85a1a3eb-dd5a-4935-ad4c-cfc02506d0af",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const Ajv = require('ajv');",
+									"const ajv = new Ajv({ logger: console });",
+									"const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"        id: { type: \"number\" },",
+									"        batchId: { type: \"number\" },",
+									"        max: { type: \"number\" },",
+									"        min: { type: \"number\" },",
+									"        value: { type: \"number\" },",
+									"        action: { type: [\"string\", \"null\"] },",
+									"        createdAt: { type: \"number\" },",
+									"        updatedAt: { type: \"number\" },",
+									"    },",
+									"    required: [\"id\", \"batchId\", \"max\", \"min\", \"value\", \"action\", \"createdAt\", \"updatedAt\"]",
+									"}",
+									"",
+									"pm.test('Schema is valid', function () {",
+									"    jsonData.forEach((data) => {",
+									"        pm.expect(ajv.validate(schema, data)).to.be.true;",
+									"    })",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{api}}/notifications",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Valid] Delete notification",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "aa4cc999-6dfb-475b-8bc4-b2afedf5d278",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "17380e5e-36db-45ac-a2f8-d6ba8299af78",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const notificationId = postman.getEnvironmentVariable(\"notificationId\");",
+									"pm.expect(jsonData.id).to.eql(notificationId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": {{notificationId}}\n}"
+						},
+						"url": {
+							"raw": "{{api}}/notifications",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Valid] Delete batch",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "19ef68a2-c488-41b1-af64-3f89260f71f4",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "42b4ca2f-33e2-40c5-b1a8-6a7c1bbd7f25",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const batchId = postman.getEnvironmentVariable(\"batchId\");",
+									"pm.expect(jsonData.id).to.eql(batchId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": {{batchId}}\n}"
+						},
+						"url": {
+							"raw": "{{api}}/batchs",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"batchs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Valid] Delete tank",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c6ef9c56-c456-428a-a26a-54fedcf4a089",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "b280446e-8cca-4a4c-be74-e7fb7b59faf0",
+								"exec": [
+									"pm.test(\"response is 200 ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"const tankId = postman.getEnvironmentVariable(\"tankId\");",
+									"pm.expect(jsonData.id).to.eql(tankId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": {{tankId}}\n}"
+						},
+						"url": {
+							"raw": "{{api}}/tanks",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"tanks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Valid] Delete tea",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "47c2a828-29a7-46a2-97be-2e161d87a1e1",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "0cff9b32-edb1-42a4-9ba7-bb1c5f9c83fd",
 								"exec": [
 									"pm.test(\"response is 200 ok\", () => {",
 									"    pm.response.to.have.status(200);",
