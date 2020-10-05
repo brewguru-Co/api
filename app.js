@@ -6,6 +6,7 @@ const indexRouter = require('./routes/index');
 const teasRouter = require('./routes/teas');
 const tankRouter = require('./routes/tanks');
 const batchRouter = require('./routes/batchs');
+const batchDataRouter = require('./routes/batchDatas');
 const tankDataRouter = require('./routes/tankDatas');
 const notificationTargetRouter = require('./routes/notificationTargets');
 
@@ -30,6 +31,7 @@ app.use('/tanks', tankRouter);
 app.use('/notificationTargets', notificationTargetRouter);
 app.use('/tankDatas', tankDataRouter);
 app.use('/batchs', batchRouter);
+app.use('/batchDatas', batchDataRouter);
 
 app.set('json replacer', (key, value) => {
   // undefined values are set to `null`

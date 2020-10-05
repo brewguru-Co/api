@@ -21,7 +21,7 @@ module.exports = {
     on: {
       allowNull: false,
       defaultValue: 1,
-      type: Sequelize.STRING,
+      type: Sequelize.TINYINT(1),
     },
     createdAt: {
       allowNull: false,

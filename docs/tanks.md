@@ -163,7 +163,6 @@ Updated tank object on success, or error on failure.
   "doxLow": 78,
   "brixHigh": null,
   "brixLow": null,
-  "startedAt": 1593932595
 }
 ```
 

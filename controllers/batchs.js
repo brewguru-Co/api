@@ -1,119 +1,144 @@
 const createError = require('http-errors');
+const Joi = require('@hapi/joi');
+const moment = require('moment');
+const models = require('../models');
 
-/*
- * Data Scale Function
- */
+const batchIdSchema = Joi.number()
+  .required()
+  .error(() => new Error('batch id is required'));
+const createBatchSchema = Joi.object({
+  teaId: Joi.number().required(),
+  tankId: Joi.number().required(),
+  startedAt: Joi.number().required(),
+});
+const batchSchema = Joi.object({
+  teaId: Joi.number(),
+  tankId: Joi.number(),
+  temp: Joi.number(),
+  ph: Joi.number(),
+  dox: Joi.number(),
+  brix: Joi.number(),
+  startedAt: Joi.number(),
+  finishedAt: Joi.number(),
+  hasError: Joi.boolean(),
+});
 
-function oneDimensional(x1, x2, y1, y2) {
-  const a = (y2 - y1) / (x2 - x1);
-  const b = y1 - a * x1;
-  return (x) => a * x + b;
-}
-
-/*
- * start, end - 15분 단위
- */
-
-function build(start, end, factors, f) {
+function toBatchObject(rawBatch) {
   const {
-    phFrom,
-    phTo,
-    tempFrom,
-    tempTo,
-    doxFrom,
-    doxTo,
-    brixFrom,
-    brixTo,
-  } = factors;
-  const FIFTEEN_MINUTES = 60 * 15;
-  const count = Math.floor((end - start) / FIFTEEN_MINUTES) + 1;
-
-  const phFn = f(0, count - 1, phFrom, phTo);
-  const tempFn = f(0, count - 1, tempFrom, tempTo);
-  const doxFn = f(0, count - 1, doxFrom, doxTo);
-  const brixFn = f(0, count - 1, brixFrom, brixTo);
-
-  const data = [];
-  for (let i = 0; i < count; i++) {
-    data.push({
-      timestamp: start + i * FIFTEEN_MINUTES,
-      ph: Number(phFn(i).toFixed(2)),
-      temp: Number(tempFn(i).toFixed(2)),
-      dox: Number(doxFn(i).toFixed(2)),
-      brix: Number(brixFn(i).toFixed(2)),
-    });
-  }
-  return data;
+    id,
+    teaId,
+    tankId,
+    temp,
+    ph,
+    dox,
+    brix,
+    startedAt,
+    finishedAt,
+    hasError,
+    createdAt,
+    updatedAt,
+  } = rawBatch;
+  return {
+    id,
+    teaId,
+    tankId,
+    teaName: rawBatch['tea.name'],
+    tankName: rawBatch['tank.name'],
+    temp,
+    ph,
+    dox,
+    brix,
+    hasError: Boolean(hasError),
+    startedAt: moment(startedAt).unix(),
+    finishedAt: finishedAt ? moment(finishedAt).unix() : null,
+    createdAt: moment(createdAt).unix(),
+    updatedAt: moment(updatedAt).unix(),
+  };
 }
 
-function buildData(start, end, factors) {
-  return build(start, end, factors, oneDimensional);
-}
-
-function getFakeBatchData(start, end, id) {
-  switch (id) {
-    case 1:
-      return buildData(start, end, {
-        phFrom: 4.2,
-        phTo: 2.4,
-        tempFrom: 32,
-        tempTo: 24,
-        doxFrom: 10,
-        doxTo: 5,
-        brixFrom: 0.9,
-        brixTo: 0.3,
-      });
-    case 2:
-      return buildData(start, end, {
-        phFrom: 3.9,
-        phTo: 2.4,
-        tempFrom: 31.5,
-        tempTo: 24.5,
-        doxFrom: 9,
-        doxTo: 5.5,
-        brixFrom: 0.89,
-        brixTo: 0.32,
-      });
-    case 3:
-      return buildData(start, end, {
-        phFrom: 4.19,
-        phTo: 2.45,
-        tempFrom: 31.2,
-        tempTo: 25,
-        doxFrom: 9.9,
-        doxTo: 5.2,
-        brixFrom: 0.9,
-        brixTo: 0.3,
-      });
-    default:
-      return buildData(start, end, {
-        phFrom: 3.5,
-        phTo: 2.9,
-        tempFrom: 29,
-        tempTo: 23,
-        doxFrom: 10,
-        doxTo: 5,
-        brixFrom: 0.9,
-        brixTo: 0.3,
-      });
-  }
-}
-
-async function getData(req, res, next) {
+async function create(req, res, next) {
   try {
-    const start = 1598918400;
-    const end = 1601424000;
-    return res.send({
-      1: getFakeBatchData(start, end, 1),
-      2: getFakeBatchData(start, end, 2),
-      3: getFakeBatchData(start, end, 3),
-      4: getFakeBatchData(start, end, 4),
-    });
+    const { body } = req;
+    await createBatchSchema.validateAsync(body);
+    const value = await batchSchema.validateAsync(body);
+
+    return models.batch
+      .create(value)
+      .then((batch) => models.batch
+        .findOne({
+          raw: true,
+          include: [models.tea, models.tank],
+          where: { id: batch.dataValues.id },
+        })
+        .then((result) => res.send(toBatchObject(result))))
+      .catch((err) => next(err));
+  } catch (e) {
+    return next(createError(400, e.message));
+  }
+}
+
+async function update(req, res, next) {
+  try {
+    const { body, params } = req;
+    const value = await batchSchema.validateAsync(body);
+    await batchIdSchema.validateAsync(params.id);
+
+    const options = {
+      where: { id: params.id },
+      raw: true,
+      include: [models.tea, models.tank],
+    };
+
+    return models.batch
+      .update(value, options)
+      .then(([updated]) => {
+        if (updated) {
+          models.batch.findOne(options).then((batch) => res.send(toBatchObject(batch)));
+        } else {
+          next(createError(400, "Bad request (batchId doesn't exit)"));
+        }
+      })
+      .catch((err) => next(err));
+  } catch (e) {
+    return next(createError(400, e.message));
+  }
+}
+
+function get(req, res, next) {
+  models.batch
+    .findAll({ raw: true, include: [models.tea, models.tank] })
+    .then((batchs) => res.send(batchs.map((batch) => toBatchObject(batch))))
+    .catch((err) => next(err));
+}
+
+async function remove(req, res, next) {
+  try {
+    const { body } = req;
+    const id = await batchIdSchema.validateAsync(body.id);
+
+    const options = {
+      where: { id },
+      raw: true,
+    };
+
+    return models.batch
+      .destroy(options)
+      .then((deleted) => {
+        if (deleted) {
+          res.send({ id });
+        } else {
+          next(createError(400, "Bad request (batchId doesn't exit)"));
+        }
+      })
+      .catch((err) => next(err));
   } catch (e) {
     return next(createError(400, e.message));
   }
 }
 
 module.exports = {
-  getData,
+  create,
+  update,
+  get,
+  remove,
 };

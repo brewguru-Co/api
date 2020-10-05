@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     });
+    tank.hasMany(models.batch);
   };
   return tank;
 };
