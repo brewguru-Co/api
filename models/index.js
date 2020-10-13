@@ -7,10 +7,10 @@ const env = process.env.NODE_ENV || 'development';
 
 const config = require('../config/config.json')[env];
 
-const TankData = require('./nosql/tankData');
+const BatchData = require('./nosql/batchData');
 
 const db = {
-  TankData,
+  BatchData,
 };
 
 let sequelize;
@@ -20,9 +20,8 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
-fs
-  .readdirSync(`${__dirname}/rdb`)
-  .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
+fs.readdirSync(`${__dirname}/rdb`)
+  .filter((file) => file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js')
   .forEach((file) => {
     const model = sequelize.import(path.join(`${__dirname}/rdb`, file));
     db[model.name] = model;

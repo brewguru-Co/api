@@ -35,7 +35,7 @@ app.use('/notifications', notificationRouter);
 app.use('/notification-targets', notificationTargetRouter);
 app.use('/tankDatas', tankDataRouter);
 app.use('/batchs', batchRouter);
-app.use('/batchDatas', batchDataRouter);
+app.use('/batch-data', batchDataRouter);
 
 app.set('json replacer', (key, value) => {
   // undefined values are set to `null`

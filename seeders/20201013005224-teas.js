@@ -1,0 +1,55 @@
+const TABLE_NAME = 'teas';
+
+module.exports = {
+  up: (queryInterface) => queryInterface.bulkInsert(
+    TABLE_NAME,
+    [
+      {
+        name: '오리지널',
+        tempHighOp: 26.6,
+        tempLowOp: 26.4,
+        phHighOp: 2.95,
+        phLowOp: 2.85,
+        doxHighOp: 26.6,
+        doxLowOp: 26.4,
+        brixHighOp: 6.5,
+        brixLowOp: 6.3,
+      },
+      {
+        name: '레몬',
+        tempHighOp: 26.6,
+        tempLowOp: 26.4,
+        phHighOp: 3.1,
+        phLowOp: 3.05,
+        doxHighOp: 26.6,
+        doxLowOp: 26.4,
+        brixHighOp: 6.8,
+        brixLowOp: 6.6,
+      },
+      {
+        name: '감귤',
+        tempHighOp: 26.6,
+        tempLowOp: 26.4,
+        phHighOp: 3.05,
+        phLowOp: 2.95,
+        doxHighOp: 26.6,
+        doxLowOp: 26.4,
+        brixHighOp: 6.6,
+        brixLowOp: 6.4,
+      },
+      {
+        name: '블랙커런트',
+        tempHighOp: 26.6,
+        tempLowOp: 26.4,
+        phHighOp: 3.05,
+        phLowOp: 2.95,
+        doxHighOp: 26.6,
+        doxLowOp: 26.4,
+        brixHighOp: 6.6,
+        brixLowOp: 6.4,
+      },
+    ],
+    {},
+  ),
+  down: (queryInterface) => queryInterface.bulkDelete(TABLE_NAME, null, {}),
+};

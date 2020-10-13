@@ -8,6 +8,7 @@ const { batchDatas } = require('../controllers');
 // router.patch('/:id', batchs.update);
 // router.delete('/', batchs.remove);
 
-router.get('/data', batchDatas.get);
+router.post('/', batchDatas.create);
+router.get('/', batchDatas.get);
 
 module.exports = router;
