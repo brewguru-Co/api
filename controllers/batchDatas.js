@@ -1,5 +1,7 @@
+const async = require('async');
 const createError = require('http-errors');
 const Joi = require('@hapi/joi');
+const moment = require('moment');
 const models = require('../models');
 
 const batchDataSchema = Joi.object({
@@ -13,10 +15,9 @@ const batchDataSchema = Joi.object({
 
 function toBatchDataObject(rawTankData) {
   const {
-    batchId, temp, ph, dox, brix, timestamp,
+    temp, ph, dox, brix, timestamp,
   } = rawTankData;
   return {
-    batchId,
     temp,
     ph,
     dox,
@@ -25,11 +26,46 @@ function toBatchDataObject(rawTankData) {
   };
 }
 
+function toBatchObject(rawBatch, batchData) {
+  const {
+    id, teaId, tankId, temp, ph, dox, brix, startedAt, finishedAt, hasError,
+  } = rawBatch;
+  return {
+    id,
+    teaId,
+    tankId,
+    teaName: rawBatch['tea.name'],
+    tankName: rawBatch['tank.name'],
+    temp,
+    ph,
+    dox,
+    brix,
+    hasError: Boolean(hasError),
+    startedAt: moment(startedAt).unix(),
+    finishedAt: finishedAt ? moment(finishedAt).unix() : null,
+    data: batchData,
+  };
+}
+
 function filterData(datas, unit = 'hour') {
   const HOUR = 60 * 60 * 1000;
   const DAY = 24 * HOUR;
   const divider = unit === 'hour' ? HOUR : DAY;
   return datas.filter((data) => data.timestamp % divider === 0);
+}
+
+function filterFutureData(obj) {
+  const newObj = {};
+  const keys = Object.keys(obj).filter((key) => {
+    const value = obj[key];
+    return value[0].timestamp <= Date.now() / 1000;
+  });
+
+  for (let i = 0; i < keys.length; i += 1) {
+    newObj[keys[i]] = obj[keys[i]];
+  }
+
+  return newObj;
 }
 
 function groupByBatchId(batchDatas) {
@@ -41,15 +77,35 @@ function groupByBatchId(batchDatas) {
     }
     obj[batchData.batchId].push(toBatchDataObject(batchDatas[i]));
   }
-  return obj;
+  return filterFutureData(obj);
 }
 
 async function get(req, res, next) {
   try {
     const { unit } = req.params;
-    return models.BatchData.find()
-      .then((batchDatas) => res.send(groupByBatchId(filterData(batchDatas, unit))))
-      .catch((err) => next(err));
+
+    return async.series(
+      [
+        (cb) => {
+          models.BatchData.find()
+            .then((batchDatas) => cb(null, batchDatas))
+            .catch((err) => cb(err));
+        },
+        (cb) => {
+          models.batch
+            .findAll({ raw: true, include: [models.tea, models.tank] })
+            .then((batchs) => cb(null, batchs))
+            .catch((err) => cb(err));
+        },
+      ],
+      (err, [batchDatas, batchs]) => {
+        if (err) next(err);
+        const groupedBatchDatas = groupByBatchId(filterData(batchDatas, unit));
+        res.send(batchs
+          .filter((batch) => moment(batch.startedAt).unix() <= Date.now() / 1000)
+          .map((batch) => toBatchObject(batch, groupedBatchDatas[batch.id])));
+      },
+    );
   } catch (e) {
     return next(createError(400, e.message));
   }

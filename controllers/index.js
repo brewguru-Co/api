@@ -6,6 +6,7 @@ const notificationTargets = require('./notificationTargets');
 const tankDatas = require('./tankDatas');
 const batchs = require('./batchs');
 const batchDatas = require('./batchDatas');
+const materials = require('./materials');
 
 module.exports = {
   teas,
@@ -16,4 +17,5 @@ module.exports = {
   notifications,
   notificationTargets,
   tankDatas,
+  materials,
 };

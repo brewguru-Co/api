@@ -92,7 +92,7 @@ async function update(req, res, next) {
 function get(req, res, next) {
   models.notification
     .findAll({ raw: true, include: models.batch })
-    .then((notifications) => res.send(notifications.map((notification) => toNotificationObject(notification))))
+    .then((results) => res.send(results.map((notification) => toNotificationObject(notification))))
     .catch((err) => next(err));
 }
 

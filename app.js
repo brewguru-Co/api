@@ -8,6 +8,7 @@ const teaOffsetsRouter = require('./routes/teaOffsets');
 const tankRouter = require('./routes/tanks');
 const batchRouter = require('./routes/batchs');
 const batchDataRouter = require('./routes/batchDatas');
+const materialRouter = require('./routes/materials');
 const tankDataRouter = require('./routes/tankDatas');
 const notificationRouter = require('./routes/notifications');
 const notificationTargetRouter = require('./routes/notificationTargets');
@@ -20,6 +21,7 @@ const app = express();
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:3000'); // update to match the domain you will make the request from
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET, PUT, PATCH, POST, DELETE');
   next();
 });
 
@@ -36,6 +38,7 @@ app.use('/notification-targets', notificationTargetRouter);
 app.use('/tankDatas', tankDataRouter);
 app.use('/batchs', batchRouter);
 app.use('/batch-data', batchDataRouter);
+app.use('/materials', materialRouter);
 
 app.set('json replacer', (key, value) => {
   // undefined values are set to `null`

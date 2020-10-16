@@ -107,7 +107,11 @@ async function update(req, res, next) {
 function get(req, res, next) {
   models.batch
     .findAll({ raw: true, include: [models.tea, models.tank] })
-    .then((batchs) => res.send(batchs.map((batch) => toBatchObject(batch))))
+    .then((batchs) => res.send(
+      batchs
+        .filter((batch) => moment(batch.startedAt).unix() <= Date.now() / 1000)
+        .map((batch) => toBatchObject(batch)),
+    ))
     .catch((err) => next(err));
 }
 

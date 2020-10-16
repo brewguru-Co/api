@@ -7,10 +7,12 @@ const env = process.env.NODE_ENV || 'development';
 
 const config = require('../config/config.json')[env];
 
+const Material = require('./nosql/materials');
 const BatchData = require('./nosql/batchData');
 
 const db = {
   BatchData,
+  Material,
 };
 
 let sequelize;
