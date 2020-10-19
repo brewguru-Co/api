@@ -10,6 +10,8 @@ const config = require('../config/config.json')[env];
 const Material = require('./nosql/materials');
 const BatchData = require('./nosql/batchData');
 
+const RedisClient = require('./redis');
+
 const db = {
   BatchData,
   Material,
@@ -37,5 +39,6 @@ Object.keys(db).forEach((modelName) => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+db.RedisClient = RedisClient;
 
 module.exports = db;

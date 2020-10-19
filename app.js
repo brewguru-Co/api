@@ -35,7 +35,7 @@ app.use('/tea-offsets', teaOffsetsRouter);
 app.use('/tanks', tankRouter);
 app.use('/notifications', notificationRouter);
 app.use('/notification-targets', notificationTargetRouter);
-app.use('/tankDatas', tankDataRouter);
+app.use('/tank-datas', tankDataRouter);
 app.use('/batchs', batchRouter);
 app.use('/batch-data', batchDataRouter);
 app.use('/materials', materialRouter);
