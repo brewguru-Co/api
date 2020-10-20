@@ -6,7 +6,7 @@ const tankDataSchema = Joi.object({
   name: Joi.string().required(),
   temp: Joi.number().required(),
   ph: Joi.number().required(),
-  doxy: Joi.number().required(),
+  dox: Joi.number().required(),
   brix: Joi.number().required(),
   timestamp: Joi.number().required(),
 });

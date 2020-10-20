@@ -48,6 +48,9 @@ function toBatchObject(rawBatch, batchData) {
 }
 
 function filterData(datas, unit = 'hour') {
+  if (unit === '15min') {
+    return datas;
+  }
   const HOUR = 60 * 60 * 1000;
   const DAY = 24 * HOUR;
   const divider = unit === 'hour' ? HOUR : DAY;
@@ -82,7 +85,7 @@ function groupByBatchId(batchDatas) {
 
 async function get(req, res, next) {
   try {
-    const { unit } = req.params;
+    const { unit } = req.query;
 
     return async.series(
       [
