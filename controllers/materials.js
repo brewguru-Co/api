@@ -1,4 +1,5 @@
 const createError = require('http-errors');
+const moment = require('moment');
 const Joi = require('@hapi/joi');
 const models = require('../models');
 
@@ -34,9 +35,21 @@ function toMaterialObject(rawTankData) {
 
 async function get(req, res, next) {
   try {
-    return models.Material.find()
-      .then((materials) => res.send(materials.map(material => toMaterialObject(material))))
-      .catch((err) => next(err));
+    return models.batch
+      .findAll({ raw: true })
+      .then((batchs) => {
+        const fininshedBatchs = batchs
+          .filter((batch) => moment(batch.startedAt).unix() <= Date.now() / 1000)
+          .map((batch) => batch.id);
+
+        return models.Material.find()
+          .then((materials) => res.send(
+            materials
+              .filter((material) => fininshedBatchs.includes(material.batchId))
+              .map((material) => toMaterialObject(material)),
+          ))
+          .catch((err) => next(err));
+      });
   } catch (e) {
     return next(createError(400, e.message));
   }
