@@ -3,7 +3,7 @@ const Joi = require('@hapi/joi');
 const models = require('../models');
 
 const tankDataSchema = Joi.object({
-  name: Joi.string().required(),
+  id: Joi.number().required(),
   temp: Joi.number().required(),
   ph: Joi.number().required(),
   dox: Joi.number().required(),
