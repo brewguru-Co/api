@@ -25,31 +25,34 @@ const materialSchema = Joi.object({
 });
 
 function toMaterialObject(rawTankData) {
-  const {
-    batchId, sugar, tea, spawn, subMaterials, createdAt,
-  } = rawTankData;
+  const { batchId, sugar, tea, spawn, subMaterials, createdAt } = rawTankData;
   return {
-    batchId, sugar, tea, spawn, subMaterials, createdAt: Math.floor(createdAt / 1000),
+    batchId,
+    sugar,
+    tea,
+    spawn,
+    subMaterials,
+    createdAt: Math.floor(createdAt / 1000),
   };
 }
 
 async function get(req, res, next) {
   try {
-    return models.batch
-      .findAll({ raw: true })
-      .then((batchs) => {
-        const fininshedBatchs = batchs
-          .filter((batch) => moment(batch.startedAt).unix() <= Date.now() / 1000)
-          .map((batch) => batch.id);
+    return models.batch.findAll({ raw: true }).then((batchs) => {
+      const fininshedBatchs = batchs
+        .filter((batch) => moment(batch.startedAt).unix() <= Date.now() / 1000)
+        .map((batch) => batch.id);
 
-        return models.Material.find()
-          .then((materials) => res.send(
+      return models.Material.find()
+        .then((materials) =>
+          res.send(
             materials
               .filter((material) => fininshedBatchs.includes(material.batchId))
               .map((material) => toMaterialObject(material)),
-          ))
-          .catch((err) => next(err));
-      });
+          ),
+        )
+        .catch((err) => next(err));
+    });
   } catch (e) {
     return next(createError(400, e.message));
   }
@@ -60,7 +63,7 @@ async function create(req, res, next) {
     const { body } = req;
     const value = await materialSchema.validateAsync(body);
 
-    value.createdAt = Date.now();
+    if (!value.createdAt) value.createdAt = Date.now();
     const materialDoc = new models.Material(value);
     return materialDoc
       .save()
