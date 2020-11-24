@@ -1,17 +1,12 @@
 const { createLogger, transports, format } = require('winston');
 
-const {
-  combine, timestamp, printf, colorize,
-} = format;
+const { combine, timestamp, json } = format;
 
-const logFormat = printf(({ level, message, timestamp: ts }) => `${ts} ${level}: ${message}`);
 const logger = createLogger({
-  format: combine(timestamp(), colorize(), logFormat),
-  transports: [
-    new transports.Console({
-      level: 'silly',
-    }),
-  ],
+  defaultMeta: { component: 'api-service' },
+  format: combine(timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), json()),
+  transports: [new transports.Console({ level: 'info' })],
+  exceptionHandlers: [new transports.Console()],
 });
 
 module.exports = logger;

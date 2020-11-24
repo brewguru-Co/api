@@ -25,7 +25,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(morgan('dev'));
+app.use(morgan('short'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
