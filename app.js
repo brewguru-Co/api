@@ -1,6 +1,6 @@
 const createError = require('http-errors');
 const express = require('express');
-const morgan = require('morgan');
+const loggingMiddleware = require('./middlewares/logging');
 
 const indexRouter = require('./routes/index');
 const teasRouter = require('./routes/teas');
@@ -25,7 +25,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(morgan('short'));
+app.use(loggingMiddleware());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
