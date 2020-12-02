@@ -29,10 +29,10 @@ app.use((req, res, next) => {
 });
 
 app.use(cookieParser());
-app.use(tokenMiddleware);
-app.use(loggingMiddleware());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(loggingMiddleware());
+app.use(tokenMiddleware);
 
 app.use('/', indexRouter);
 app.use('/teas', teasRouter);

@@ -2,7 +2,8 @@ const { decodeToken, generateToken } = require('../helpers/token');
 
 const tokenMiddleware = async (req, res, next) => {
   const token = req.cookies.access_token;
-  if (!token) next();
+
+  if (!token) return next();
 
   try {
     const decoded = await decodeToken(token);

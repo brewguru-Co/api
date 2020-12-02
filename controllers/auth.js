@@ -36,7 +36,7 @@ async function create(req, res, next) {
     }
 
     res.cookie('access_token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
-    return res.status(201).end();
+    return res.status(201).send({ id: value.id });
   } catch (e) {
     return next(createError(400, e.message));
   }
@@ -62,7 +62,7 @@ async function login(req, res, next) {
 
     res.cookie('access_token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
     // res.setHeader('Location', '/');
-    return res.status(200).send('OK');
+    return res.status(200).send({ id: value.id });
   } catch (e) {
     return next(createError(400, e.message));
   }
