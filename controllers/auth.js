@@ -1,6 +1,7 @@
 const createError = require('http-errors');
 const Joi = require('@hapi/joi');
 const models = require('../models');
+const logger = require('../helpers/logger');
 
 const authSchema = Joi.object({
   id: Joi.string().required(),
@@ -12,9 +13,30 @@ async function create(req, res, next) {
     const { body } = req;
     const value = await authSchema.validateAsync(body);
 
-    return models.Auth.register(value)
-      .then(() => res.status(201).send('OK'))
-      .catch((err) => next(err));
+    let existing = null;
+    try {
+      existing = await models.Auth.findById(body);
+    } catch (e) {
+      logger.error(e, { at: 'auth' });
+      next(createError(500, 'Internal Server Error'));
+    }
+
+    if (existing) {
+      return res.status(409).send('Already Exist');
+    }
+
+    const auth = await models.Auth.register(value);
+
+    let token = null;
+    try {
+      token = await auth.generateToken();
+    } catch (e) {
+      logger.error(e, { at: 'token' });
+      return next(createError(500, 'Internal Server Error'));
+    }
+
+    res.cookie('access_token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
+    return res.status(201).end();
   } catch (e) {
     return next(createError(400, e.message));
   }
@@ -29,14 +51,33 @@ async function login(req, res, next) {
     if (!auth || !auth.validatePassword(value.password)) {
       return next(createError(403, 'Invalid ID or Password'));
     }
-    res.setHeader('Location', '/');
-    return res.status(302).send('OK');
+
+    let token = null;
+    try {
+      token = await auth.generateToken();
+    } catch (e) {
+      logger.error(e, { at: 'token' });
+      return next(createError(500, 'Internal Server Error'));
+    }
+
+    res.cookie('access_token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
+    // res.setHeader('Location', '/');
+    return res.status(200).send('OK');
   } catch (e) {
     return next(createError(400, e.message));
   }
 }
 
+function check(req, res) {
+  const { user } = req;
+  if (!user) {
+    return res.status(403).end();
+  }
+  return res.send(user);
+}
+
 module.exports = {
   create,
   login,
+  check,
 };

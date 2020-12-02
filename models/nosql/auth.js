@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { hash } = require('../../helpers/utils');
+const { generateToken } = require('../../helpers/token');
 
 const { Schema } = mongoose;
 
@@ -19,6 +20,15 @@ authSchema.statics.findById = function ({ id }) {
 
 authSchema.methods.validatePassword = function (password) {
   return this.password === hash(password);
+};
+
+authSchema.methods.generateToken = function () {
+  const payload = {
+    // eslint-disable-next-line no-underscore-dangle
+    _id: this._id,
+    id: this.id,
+  };
+  return generateToken(payload);
 };
 
 module.exports = mongoose.model('auth', authSchema);

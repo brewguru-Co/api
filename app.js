@@ -1,6 +1,8 @@
 const createError = require('http-errors');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const loggingMiddleware = require('./middlewares/logging');
+const tokenMiddleware = require('./middlewares/token');
 
 const indexRouter = require('./routes/index');
 const teasRouter = require('./routes/teas');
@@ -26,6 +28,8 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(cookieParser());
+app.use(tokenMiddleware);
 app.use(loggingMiddleware());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
