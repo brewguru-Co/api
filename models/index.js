@@ -9,12 +9,14 @@ const config = require('../config/config.json')[env];
 
 const Material = require('./nosql/materials');
 const BatchData = require('./nosql/batchData');
+const Auth = require('./nosql/auth');
 
 const RedisClient = require('./redis');
 
 const db = {
   BatchData,
   Material,
+  Auth,
 };
 
 let sequelize;

@@ -80,10 +80,19 @@ function onListening() {
 
 async function start() {
   // sync() will create all table if they doesn't exist in database
-  await models.sequelize.sync();
-  logger.info('mysql connected');
-  await mongooseLoader();
-  logger.info('mongoDB connected');
+  try {
+    await models.sequelize.sync();
+    logger.info('mysql connected');
+  } catch (e) {
+    logger.error(e, { from: 'mysql' });
+  }
+
+  try {
+    await mongooseLoader();
+    logger.info('mongoDB connected');
+  } catch (e) {
+    logger.error(e, { from: 'mongo' });
+  }
 
   server.listen(port);
   server.on('error', onError);

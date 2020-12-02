@@ -7,6 +7,7 @@ const tankDatas = require('./tankDatas');
 const batchs = require('./batchs');
 const batchDatas = require('./batchDatas');
 const materials = require('./materials');
+const auth = require('./auth');
 
 module.exports = {
   teas,
@@ -18,4 +19,5 @@ module.exports = {
   notificationTargets,
   tankDatas,
   materials,
+  auth,
 };

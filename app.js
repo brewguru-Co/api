@@ -12,6 +12,7 @@ const materialRouter = require('./routes/materials');
 const tankDataRouter = require('./routes/tankDatas');
 const notificationRouter = require('./routes/notifications');
 const notificationTargetRouter = require('./routes/notificationTargets');
+const authRouter = require('./routes/auth');
 
 const error = require('./helpers/error');
 const logger = require('./helpers/logger');
@@ -39,6 +40,7 @@ app.use('/tank-datas', tankDataRouter);
 app.use('/batchs', batchRouter);
 app.use('/batch-data', batchDataRouter);
 app.use('/materials', materialRouter);
+app.use('/auth', authRouter);
 
 app.set('json replacer', (key, value) => {
   // undefined values are set to `null`
