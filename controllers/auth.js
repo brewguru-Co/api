@@ -35,7 +35,7 @@ async function create(req, res, next) {
       return next(createError(500, 'Internal Server Error'));
     }
 
-    res.cookie('access_token', token, { httpOnly: true, maxAge: 8 * 60 * 60 * 1000 });
+    res.cookie('access_token', token, { httpOnly: true, maxAge: 3 * 60 * 60 * 1000 });
     return res.status(201).send({ id: value.id });
   } catch (e) {
     return next(createError(400, e.message));
@@ -60,7 +60,7 @@ async function login(req, res, next) {
       return next(createError(500, 'Internal Server Error'));
     }
 
-    res.cookie('access_token', token, { httpOnly: true, maxAge: 8 * 60 * 60 * 1000 });
+    res.cookie('access_token', token, { httpOnly: true, maxAge: 3 * 60 * 60 * 1000 });
     // res.setHeader('Location', '/');
     return res.status(200).send({ id: value.id });
   } catch (e) {
