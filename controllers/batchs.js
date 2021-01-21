@@ -11,6 +11,10 @@ const createBatchSchema = Joi.object({
   tankId: Joi.number().required(),
   startedAt: Joi.number().required(),
   finishedAt: Joi.number(),
+  temp: Joi.number(),
+  ph: Joi.number(),
+  dox: Joi.number(),
+  brix: Joi.number(),
 });
 const batchSchema = Joi.object({
   teaId: Joi.number(),
